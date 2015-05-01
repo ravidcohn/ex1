@@ -9,7 +9,9 @@ import java.util.HashMap;
 public class Main {
 
     public static void main(String[] args) {
-
+    String path = "src/test.corp";
+        ArrayList<String> corpus = readCorpus(path);
+        HashMap<String,Integer>[] nGramTable = createNGramTable(corpus,5);
 
     }
 
@@ -44,8 +46,34 @@ public class Main {
     }
 
     public static HashMap<String,Integer> countAllWords(ArrayList<String> lines, int n_gram){
-        //TODO
-        return null;
-    }
+        HashMap<String,Integer> wordCount = new HashMap<>();
+        int j_border_end = n_gram-1;
 
+        for (String line: lines) {
+            String [] tokes = line.split(" ");
+            int j_end = tokes.length - j_border_end;
+            for (int j = 0; j < j_end; j++) {
+                String str = "";
+                for (int k = 0; k < n_gram; k++) {
+                    str = str + tokes[j+k]+" ";
+                }
+                if(str.length() > 0){
+                    if(wordCount.get(str) == null){
+                        wordCount.put(str,0);
+                    }
+                    wordCount.put(str,wordCount.get(str)+1);
+                }
+            }
+        }
+
+        return wordCount;
+    }
+    public static HashMap<String,Integer>[] createNGramTable(ArrayList<String> lines, int n_gram){
+        @SuppressWarnings("unchecked")
+        HashMap<String,Integer>[] nGramTable = new HashMap[n_gram];
+        for (int i = 0; i < n_gram; i++) {
+            nGramTable[i] = countAllWords(lines,i+1);
+        }
+        return nGramTable;
+    }
 }
