@@ -5,7 +5,7 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("lior wolf is a busster");
         //ertretwetrwet
-        //Fucking shit
+        System.out.println("Fucking shit!");
 
     }
 }
