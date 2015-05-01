@@ -27,7 +27,7 @@ public class Main {
             br = new BufferedReader(new FileReader(fileName));
 
             while ((sCurrentLine = br.readLine()) != null) {
-                //TODO
+                //TODO split "sCurrentLine" into sentences
                 lines.add(sCurrentLine);
             }
 
