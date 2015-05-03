@@ -5,21 +5,25 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.StringTokenizer;
 
 public class Main {
 
     public static void main(String[] args) {
-    String path = "src/test.corp";
-        ArrayList<String> corpus = readCorpus(path);
-        HashMap<String,Integer>[] nGramTable = createNGramTable(corpus,5);
-
+        String path = "src/test.corp";
+        ArrayList<String> corpus = readCorpus(args[0]);
+        HashMap<String,Integer>[] nGramTable = createNGramTable(corpus,1);
+        int i=1;
     }
 
     public static ArrayList<String> readCorpus(String fileName){
         ArrayList<String> lines = new ArrayList<>();
 
         BufferedReader br = null;
-
+        String START = "<s> ";
+        String END = " </s>";
+        String DELIMS = ";:";
+        String[] tokens = null;
         try {
 
             String sCurrentLine;
@@ -28,7 +32,22 @@ public class Main {
 
             while ((sCurrentLine = br.readLine()) != null) {
                 //TODO split "sCurrentLine" into sentences
-                lines.add(sCurrentLine);
+                StringTokenizer st = new StringTokenizer(sCurrentLine,DELIMS);
+                tokens = sCurrentLine.split(DELIMS);
+                for(int i=0;i<tokens.length;i++) {
+                    tokens[i] = tokens[i].replaceAll(",", "");
+                    tokens[i] = tokens[i].replaceAll(":","");
+                    tokens[i] = tokens[i].replaceAll(";","");
+                    tokens[i] = tokens[i].replaceAll("\\(","");
+                    tokens[i] = tokens[i].replaceAll("\\)","");
+                    tokens[i] = tokens[i].replaceAll("\\?","");
+                    tokens[i] = tokens[i].replaceAll("\\.","");
+                    tokens[i] = tokens[i].replaceAll("\"","");
+                    tokens[i] = tokens[i].replaceAll("\\s+"," ");
+                    tokens[i] = tokens[i].trim();
+                    tokens[i] = START + tokens[i] + END;
+                    lines.add(tokens[i]);
+                }
             }
 
         } catch (IOException e) {
@@ -58,6 +77,7 @@ public class Main {
                     str = str + tokes[j+k]+" ";
                 }
                 if(str.length() > 0){
+                    str = str.trim();
                     if(wordCount.get(str) == null){
                         wordCount.put(str,0);
                     }
