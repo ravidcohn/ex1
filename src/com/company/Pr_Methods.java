@@ -44,28 +44,28 @@ public class Pr_Methods {
 
     public void LidstonesLaw(HashMap<String,Integer>[] nGramTable, double lmbda){
         double[] N = new double[nGramTable.length];
-        saveLM("\\data\\\n");
+        saveLine("\\data\\\n");
         for (int i = 0;i <  nGramTable.length;i++) {
             for (double n : nGramTable[i].values()) {
                 N[i] += n;
             }
-            saveLM("ngram "+(i+1)+"="+(int)N[i]+"\n");
+            saveLine("ngram " + (i + 1) + "=" + (int) N[i] + "\n");
         }
 
-        saveLM("\n");
+        saveLine("\n");
         String str = "";
         DecimalFormat df = new DecimalFormat("#.####");
         df.setRoundingMode(RoundingMode.CEILING);
         for (int i = 0; i < nGramTable.length; i++) {
-            saveLM("\\"+(i+1)+"-gram:\n");
+            saveLine("\\" + (i + 1) + "-gram:\n");
             double lmbdaBN = lmbda * Math.pow(nGramTable[i].keySet().size(), (i + 1)) + N[i];
             for (String wi : nGramTable[i].keySet()) {
                 double pr = (double) nGramTable[i].get(wi) + lmbda;
                 pr /= lmbdaBN ;
                 str = df.format(Math.log10(pr)) + " " + wi+"\n";
-                saveLM(str);
+                saveLine(str);
             }
-            saveLM("\n");
+            saveLine("\n");
         }
     }
     //TODO: write the function
@@ -73,7 +73,7 @@ public class Pr_Methods {
 
     }
 
-    public void saveLM(String line){
+    public void saveLine(String line){
         try{
             bufferWritter.write(line);
         }catch(Exception e){
