@@ -1,5 +1,7 @@
 package com.company;
 
+import com.sun.org.apache.xerces.internal.xs.StringList;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -15,22 +17,21 @@ public class Main {
 //        ArrayList<String> corpus = readCorpus(path);
         String out = "src/out_test.txt";
         ArrayList<String> corpus = readCorpus(args[0]);
-        HashMap<String,Integer>[] nGramTable = createNGramTable(corpus, 5);
+        HashMap<String,Integer>[] nGramTable = createNGramTable(corpus, 1);
         Pr_Methods pr = new Pr_Methods(nGramTable,"lw",1,out);
         time = System.currentTimeMillis() - time;
         double sec = ((double)time)/1000;
         System.out.println("Run time: "+sec+" sec");
-        int i=1;
     }
 
     public static ArrayList<String> readCorpus(String fileName){
         ArrayList<String> lines = new ArrayList<>();
-
+        StringTokenizer st;
         BufferedReader br = null;
         String START = "<s> ";
         String END = " </s>";
         String DELIMS = ";:";
-        String[] tokens = null;
+        String line = null;
         try {
 
             String sCurrentLine;
@@ -38,22 +39,21 @@ public class Main {
             br = new BufferedReader(new FileReader(fileName));
 
             while ((sCurrentLine = br.readLine()) != null) {
-                //TODO split "sCurrentLine" into sentences
-                StringTokenizer st = new StringTokenizer(sCurrentLine,DELIMS);
-                tokens = sCurrentLine.split(DELIMS);
-                for(int i=0;i<tokens.length;i++) {
-                    tokens[i] = tokens[i].replaceAll(",", "");
-                    tokens[i] = tokens[i].replaceAll(":","");
-                    tokens[i] = tokens[i].replaceAll(";","");
-                    tokens[i] = tokens[i].replaceAll("\\(","");
-                    tokens[i] = tokens[i].replaceAll("\\)","");
-                    tokens[i] = tokens[i].replaceAll("\\?","");
-                    tokens[i] = tokens[i].replaceAll("\\.","");
-                    tokens[i] = tokens[i].replaceAll("\"","");
-                    tokens[i] = tokens[i].replaceAll("\\s+"," ");
-                    tokens[i] = tokens[i].trim();
-                    tokens[i] = START + tokens[i] + END;
-                    lines.add(tokens[i]);
+                st = new StringTokenizer(sCurrentLine,DELIMS);
+                while(st.hasMoreElements()){
+                    line = (String) st.nextElement();
+                    line = line.replaceAll(",", "");
+                    line = line.replaceAll(":", "");
+                    line = line.replaceAll(";", "");
+                    line = line.replaceAll("\\(", "");
+                    line = line.replaceAll("\\)", "");
+                    line = line.replaceAll("\\?", "");
+                    line = line.replaceAll("\\.","");
+                    line = line.replaceAll("\"", "");
+                    line = line.replaceAll("\\s+", " ");
+                    line = line.trim();
+                    line = START + line + END;
+                    lines.add(line);
                 }
             }
 
