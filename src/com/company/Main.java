@@ -11,7 +11,7 @@ public class Main {
     public static void main(String[] args) {
         long time = System.currentTimeMillis();
         String path = "src/small_input_test.crop";
-        String out = "out_test.txt";
+        String out = "src/out_test.txt";
         ArrayList<String> corpus = readCorpus(path);
         HashMap<String,Integer>[] nGramTable = createNGramTable(corpus, 5);
         Pr_Methods pr = new Pr_Methods(nGramTable,"lw",1,out);
