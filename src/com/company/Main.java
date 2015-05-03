@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class Main {
 
     public static void main(String[] args) {
-    String path = "src/test.corp";
+        String path = "src/test.corp";
         ArrayList<String> corpus = readCorpus(path);
         HashMap<String,Integer>[] nGramTable = createNGramTable(corpus,5);
 
