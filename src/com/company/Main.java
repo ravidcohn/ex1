@@ -16,7 +16,8 @@ public class Main {
         HashMap<String,Integer>[] nGramTable = createNGramTable(corpus, 5);
         Pr_Methods pr = new Pr_Methods(nGramTable,"lw",1,out);
         time = System.currentTimeMillis() - time;
-        System.out.println("Run time: "+time);
+        double sec = ((double)time)/1000;
+        System.out.println("Run time: "+sec+" sec");
     }
 
     public static ArrayList<String> readCorpus(String fileName){
