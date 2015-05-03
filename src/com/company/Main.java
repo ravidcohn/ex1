@@ -9,10 +9,14 @@ import java.util.HashMap;
 public class Main {
 
     public static void main(String[] args) {
-        String path = "src/test.corp";
+        long time = System.currentTimeMillis();
+        String path = "src/small_input_test.crop";
+        String out = "out_test.txt";
         ArrayList<String> corpus = readCorpus(path);
-        HashMap<String,Integer>[] nGramTable = createNGramTable(corpus,5);
-
+        HashMap<String,Integer>[] nGramTable = createNGramTable(corpus, 5);
+        Pr_Methods pr = new Pr_Methods(nGramTable,"lw",1,out);
+        time = System.currentTimeMillis() - time;
+        System.out.println("Run time: "+time);
     }
 
     public static ArrayList<String> readCorpus(String fileName){
