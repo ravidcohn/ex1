@@ -11,17 +11,15 @@ public class Main {
 
     public static void main(String[] args) {
         long time = System.currentTimeMillis();
-        String path = "src/small_input_test.crop";
+//        String path = "src/small_input_test.crop";
+//        ArrayList<String> corpus = readCorpus(path);
         String out = "src/out_test.txt";
-        ArrayList<String> corpus = readCorpus(path);
+        ArrayList<String> corpus = readCorpus(args[0]);
         HashMap<String,Integer>[] nGramTable = createNGramTable(corpus, 5);
         Pr_Methods pr = new Pr_Methods(nGramTable,"lw",1,out);
         time = System.currentTimeMillis() - time;
         double sec = ((double)time)/1000;
         System.out.println("Run time: "+sec+" sec");
-        String path = "src/test.corp";
-        ArrayList<String> corpus = readCorpus(args[0]);
-        HashMap<String,Integer>[] nGramTable = createNGramTable(corpus,1);
         int i=1;
     }
 
