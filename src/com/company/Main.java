@@ -30,7 +30,7 @@ public class Main {
         BufferedReader br = null;
         String START = "<s> ";
         String END = " </s>";
-        String DELIMS = ";:";
+        String DELIMS = ";:\"";
         String line = null;
         try {
 
@@ -42,18 +42,20 @@ public class Main {
                 st = new StringTokenizer(sCurrentLine,DELIMS);
                 while(st.hasMoreElements()){
                     line = (String) st.nextElement();
-                    line = line.replaceAll(",", "");
-                    line = line.replaceAll(":", "");
-                    line = line.replaceAll(";", "");
-                    line = line.replaceAll("\\(", "");
-                    line = line.replaceAll("\\)", "");
-                    line = line.replaceAll("\\?", "");
-                    line = line.replaceAll("\\.","");
-                    line = line.replaceAll("\"", "");
+                    line = line.replaceAll(",", " ");
+                    line = line.replaceAll(":", " ");
+                    line = line.replaceAll(";", " ");
+                    line = line.replaceAll("\\(", " ");
+                    line = line.replaceAll("\\)", " ");
+                    line = line.replaceAll("\\?", " ");
+                    line = line.replaceAll("\\."," ");
+                    line = line.replaceAll("\"", " ");
                     line = line.replaceAll("\\s+", " ");
                     line = line.trim();
-                    line = START + line + END;
-                    lines.add(line);
+                    if (line.length()>0) {
+                        line = START + line + END;
+                        lines.add(line);
+                    }
                 }
             }
 
