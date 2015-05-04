@@ -82,7 +82,7 @@ Wrap each line with START & END symbol.
     public static HashMap<String,Integer> countAllWords(ArrayList<String> lines, int n_gram){
         HashMap<String,Integer> wordCount = new HashMap<>();
         int j_border_end = n_gram-1;
-
+        wordCount.put("UNK",0);
         for (String line: lines) {
             String [] tokes = line.split(" ");
             int j_end = tokes.length - j_border_end;
@@ -95,6 +95,9 @@ Wrap each line with START & END symbol.
                     str = str.trim();
                     if(wordCount.get(str) == null){
                         wordCount.put(str,0);
+                        wordCount.put("UNK",wordCount.get("UNK")+1);
+                    }else if(wordCount.get(str) == 1){
+                        wordCount.put("UNK",wordCount.get("UNK")-1);
                     }
                     wordCount.put(str,wordCount.get(str)+1);
                 }
@@ -111,4 +114,5 @@ Wrap each line with START & END symbol.
         }
         return nGramTable;
     }
+
 }
