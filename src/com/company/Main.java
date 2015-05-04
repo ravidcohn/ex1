@@ -20,6 +20,7 @@ public class Main {
         int n_gram = 5;
         HashMap<String,ArrayList<Integer>>[] TN_Table =  new HashMap[n_gram-1];;
         HashMap<String,Integer>[] nGramTable = createNGramTable(corpus,n_gram,method,TN_Table);
+        nGramTable = addUnknown(nGramTable);
         Pr_Methods pr = new Pr_Methods(nGramTable,method,1,out,TN_Table);
         time = System.currentTimeMillis() - time;
         double sec = ((double)time)/1000;
@@ -127,7 +128,7 @@ public class Main {
                             arr.add(0);
                             TN_Table[n_gram-2].put(subStr, arr);
                         }
-                        TN_Table[n_gram-2].get(subStr).set(0,TN_Table[n_gram-2].get(subStr).get(0)+1);
+                        TN_Table[n_gram-2].get(subStr).set(0, TN_Table[n_gram - 2].get(subStr).get(0)+1);
                     }
                     wordCount.put(str, wordCount.get(str) + 1);
                     TN_Table[n_gram-2].get(subStr).set(1, TN_Table[n_gram - 2].get(subStr).get(1) + 1);
@@ -154,6 +155,16 @@ public class Main {
                 nGramTable[i] = countAllWords2(lines, i + 1,TN_Table);
             }
         }
+        return nGramTable;
+    }
+    private static HashMap<String,Integer>[] addUnknown(HashMap<String, Integer>[] nGramTable) {
+        int count = 0;
+        for (double n : nGramTable[0].values()){
+            if(n==1){
+                count +=n;
+            }
+        }
+        nGramTable[0].put("<UNK>", count);
         return nGramTable;
     }
 
