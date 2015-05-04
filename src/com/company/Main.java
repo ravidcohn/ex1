@@ -23,13 +23,19 @@ public class Main {
         double sec = ((double)time)/1000;
         System.out.println("Run time: "+sec+" sec");
     }
-
+/*
+Input: text file.
+Output: Separate the file into lines by DELIMS.
+Wrap each line with START & END symbol.
+ */
     public static ArrayList<String> readCorpus(String fileName){
         ArrayList<String> lines = new ArrayList<>();
         StringTokenizer st;
         BufferedReader br = null;
         String START = "<s> ";
         String END = " </s>";
+        //Which symbol to use for separating the lines.
+        //TODO insert special cases, like "S.K.".
         String DELIMS = ";:\"";
         String line = null;
         try {
