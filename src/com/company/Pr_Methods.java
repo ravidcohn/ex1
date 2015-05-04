@@ -42,17 +42,8 @@ public class Pr_Methods {
 
 
 
-    public void LidstonesLaw(HashMap<String,Integer>[] nGramTable, double lmbda){
-        double[] N = new double[nGramTable.length];
-        saveLine("\\data\\\n");
-        for (int i = 0;i <  nGramTable.length;i++) {
-            for (double n : nGramTable[i].values()) {
-                N[i] += n;
-            }
-            saveLine("ngram " + (i + 1) + "=" + (int) N[i] + "\n");
-        }
-
-        saveLine("\n");
+    private void LidstonesLaw(HashMap<String,Integer>[] nGramTable, double lmbda){
+        double[] N = countN(nGramTable);
         String str = "";
         DecimalFormat df = new DecimalFormat("#.####");
         df.setRoundingMode(RoundingMode.CEILING);
@@ -68,12 +59,36 @@ public class Pr_Methods {
             saveLine("\n");
         }
     }
-    //TODO: write the function
-    public void WittenBell(HashMap<String,Integer>[] nGramTable){
 
+    private void WittenBell(HashMap<String,Integer>[] nGramTable){
+        countN(nGramTable);
+        String str = "";
+        DecimalFormat df = new DecimalFormat("#.####");
+        df.setRoundingMode(RoundingMode.CEILING);
+        for (int i = 0; i < nGramTable.length; i++) {
+            saveLine("\\" + (i + 1) + "-gram:\n");
+            for (String wi : nGramTable[i].keySet()) {
+                double pr = (double) nGramTable[i].get(wi);
+
+                str = df.format(Math.log10(pr)) + " " + wi+"\n";
+                saveLine(str);
+            }
+            saveLine("\n");
+        }
     }
-
-    public void saveLine(String line){
+    private double[] countN(HashMap<String,Integer>[] nGramTable){
+        double[] N = new double[nGramTable.length];
+        saveLine("\\data\\\n");
+        for (int i = 0;i <  nGramTable.length;i++) {
+            for (double n : nGramTable[i].values()) {
+                N[i] += n;
+            }
+            saveLine("ngram " + (i + 1) + "=" + (int) N[i] + "\n");
+        }
+        saveLine("\n");
+        return N;
+    }
+    private void saveLine(String line){
         try{
             bufferWritter.write(line);
         }catch(Exception e){
