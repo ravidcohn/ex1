@@ -13,12 +13,12 @@ public class Main {
 
     public static void main(String[] args) {
         long time = System.currentTimeMillis();
-        String path = "src/small_input_test.crop";
+        String path = "src/very_small_input";
         ArrayList<String> corpus = readCorpus(path);
         String out = "src/out_test.txt";
-        String method = "lw2";
+        String method = "wb";
         int n_gram = 5;
-        HashMap<String,ArrayList<Integer>>[] TN_Table =  new HashMap[n_gram-1];;
+        HashMap<String,ArrayList<Integer>>[] TN_Table =  new HashMap[n_gram-1];
         HashMap<String,Integer>[] nGramTable = createNGramTable(corpus,n_gram,method,TN_Table);
         nGramTable = addUnknown(nGramTable);
         Pr_Methods pr = new Pr_Methods(nGramTable,method,1,out,TN_Table);
