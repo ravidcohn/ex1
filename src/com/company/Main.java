@@ -1,7 +1,5 @@
 package com.company;
 
-import com.sun.org.apache.xerces.internal.xs.StringList;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -16,9 +14,9 @@ public class Main {
         String path = "src/small_input_test.crop";
         ArrayList<String> corpus = readCorpus(path);
         String out = "src/out_test.txt";
-        String method = "lw2";
+        String method = "lw";
         int n_gram = 5;
-        HashMap<String,ArrayList<Integer>>[] TN_Table =  new HashMap[n_gram-1];;
+        HashMap<String,ArrayList<Integer>>[] TN_Table =  new HashMap[n_gram-1];
         HashMap<String,Integer>[] nGramTable = createNGramTable(corpus,n_gram,method,TN_Table);
         Pr_Methods pr = new Pr_Methods(nGramTable,method,1,out,TN_Table);
         time = System.currentTimeMillis() - time;
@@ -143,7 +141,7 @@ public class Main {
             ,String method,HashMap<String,ArrayList<Integer>>[] TN_Table){
         @SuppressWarnings("unchecked")
         HashMap<String,Integer>[] nGramTable = new HashMap[n_gram];
-        if(method.equals("lw")) {
+        if(method.equals("wb")) {
             for (int i = 0; i < n_gram; i++) {
                 nGramTable[i] = countAllWords(lines, i + 1);
             }
