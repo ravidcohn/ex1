@@ -18,16 +18,20 @@ public class Main {
         String out = "src/out_test.txt";
         ArrayList<String> corpus = readCorpus(args[0]);
         HashMap<String,Integer>[] nGramTable = createNGramTable(corpus, 1);
+        nGramTable = addUnknown(nGramTable);
         Pr_Methods pr = new Pr_Methods(nGramTable,"lw",1,out);
         time = System.currentTimeMillis() - time;
         double sec = ((double)time)/1000;
         System.out.println("Run time: "+sec+" sec");
     }
-/*
-Input: text file.
-Output: Separate the file into lines by DELIMS.
-Wrap each line with START & END symbol.
- */
+
+
+
+    /*
+    Input: text file.
+    Output: Separate the file into lines by DELIMS.
+    Wrap each line with START & END symbol.
+     */
     public static ArrayList<String> readCorpus(String fileName){
         ArrayList<String> lines = new ArrayList<>();
         StringTokenizer st;
@@ -82,7 +86,6 @@ Wrap each line with START & END symbol.
     public static HashMap<String,Integer> countAllWords(ArrayList<String> lines, int n_gram){
         HashMap<String,Integer> wordCount = new HashMap<>();
         int j_border_end = n_gram-1;
-        wordCount.put("UNK",0);
         for (String line: lines) {
             String [] tokes = line.split(" ");
             int j_end = tokes.length - j_border_end;
@@ -95,9 +98,6 @@ Wrap each line with START & END symbol.
                     str = str.trim();
                     if(wordCount.get(str) == null){
                         wordCount.put(str,0);
-                        wordCount.put("UNK",wordCount.get("UNK")+1);
-                    }else if(wordCount.get(str) == 1){
-                        wordCount.put("UNK",wordCount.get("UNK")-1);
                     }
                     wordCount.put(str,wordCount.get(str)+1);
                 }
@@ -105,6 +105,17 @@ Wrap each line with START & END symbol.
         }
 
         return wordCount;
+    }
+
+    private static HashMap<String,Integer>[] addUnknown(HashMap<String, Integer>[] nGramTable) {
+        int count = 0;
+        for (double n : nGramTable[0].values()){
+            if(n==1){
+                count +=n;
+            }
+        }
+        nGramTable[0].put("<UNK>", count);
+        return nGramTable;
     }
     public static HashMap<String,Integer>[] createNGramTable(ArrayList<String> lines, int n_gram){
         @SuppressWarnings("unchecked")
