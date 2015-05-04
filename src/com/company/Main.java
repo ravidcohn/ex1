@@ -23,13 +23,19 @@ public class Main {
         double sec = ((double)time)/1000;
         System.out.println("Run time: "+sec+" sec");
     }
-
+/*
+Input: text file.
+Output: Separate the file into lines by DELIMS.
+Wrap each line with START & END symbol.
+ */
     public static ArrayList<String> readCorpus(String fileName){
         ArrayList<String> lines = new ArrayList<>();
         StringTokenizer st;
         BufferedReader br = null;
         String START = "<s> ";
         String END = " </s>";
+        //Which symbol to use for separating the lines.
+        //TODO insert special cases, like "S.K.".
         String DELIMS = ";:\"";
         String line = null;
         try {
@@ -76,7 +82,7 @@ public class Main {
     public static HashMap<String,Integer> countAllWords(ArrayList<String> lines, int n_gram){
         HashMap<String,Integer> wordCount = new HashMap<>();
         int j_border_end = n_gram-1;
-
+        wordCount.put("UNK",0);
         for (String line: lines) {
             String [] tokes = line.split(" ");
             int j_end = tokes.length - j_border_end;
@@ -89,6 +95,9 @@ public class Main {
                     str = str.trim();
                     if(wordCount.get(str) == null){
                         wordCount.put(str,0);
+                        wordCount.put("UNK",wordCount.get("UNK")+1);
+                    }else if(wordCount.get(str) == 1){
+                        wordCount.put("UNK",wordCount.get("UNK")-1);
                     }
                     wordCount.put(str,wordCount.get(str)+1);
                 }
@@ -105,4 +114,5 @@ public class Main {
         }
         return nGramTable;
     }
+
 }
