@@ -15,7 +15,8 @@ public class Pr_Methods {
     private FileWriter fileWritter;
     BufferedWriter bufferWritter;
 
-    public Pr_Methods(HashMap<String,Integer>[] nGramTable,String method,double lmbda,String outPath){
+    public Pr_Methods(HashMap<String,Integer>[] nGramTable,String method,
+                      double lmbda,String outPath,HashMap<String,ArrayList<Integer>>[] TN_Table){
         this.outPath = outPath;
         File file = new File(outPath);
         try {
@@ -27,7 +28,7 @@ public class Pr_Methods {
             bufferWritter = new BufferedWriter(fileWritter);
 
             if(method.equals("wb")) {
-                WittenBell(nGramTable);
+                WittenBell(nGramTable,TN_Table);
             }
             else{
                 LidstonesLaw(nGramTable,lmbda);
@@ -60,7 +61,7 @@ public class Pr_Methods {
         }
     }
 
-    private void WittenBell(HashMap<String,Integer>[] nGramTable){
+    private void WittenBell(HashMap<String,Integer>[] nGramTable,HashMap<String,ArrayList<Integer>>[] TN_Table){
         countN(nGramTable);
         String str = "";
         DecimalFormat df = new DecimalFormat("#.####");
@@ -69,7 +70,6 @@ public class Pr_Methods {
             saveLine("\\" + (i + 1) + "-gram:\n");
             for (String wi : nGramTable[i].keySet()) {
                 double pr = (double) nGramTable[i].get(wi);
-
                 str = df.format(Math.log10(pr)) + " " + wi+"\n";
                 saveLine(str);
             }
