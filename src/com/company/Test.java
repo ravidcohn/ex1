@@ -27,13 +27,13 @@ public class Test {
         ArrayList<ArrayList<Double>> lambda = new ArrayList<>();
         ArrayList<String> corpus = Parse.readCorpus(args[0]);
         N = readNumberOfWords(corpus, n_gram);
-        if (method=="wb"){
+        if (method.equals("wb")){
             readWB(args[1]);
-        }else if(method=="ls"){
+        }else if(method.equals("ls")){
             readLS(args[1]);
         }
         lambda = Combination.CreateLmbdaList(n_gram);
-        if (method=="wb") {
+        if (method.equals("wb")) {
             for (ArrayList<Double> temp_lambda:lambda) {
                 for (String line: corpus) {
                     Perplexity += evalWB(line, temp_lambda);
@@ -43,9 +43,8 @@ public class Test {
                     Best_Perplexity = Perplexity;
                     best_lambda = temp_lambda;
                 }
-                System.out.println(Perplexity);
             }
-            }else if(method=="ls"){
+            }else if(method.equals("ls")){
                 for (String line: corpus) {
                     Perplexity += evalLS(line, n_gram);
                  }
@@ -65,7 +64,7 @@ public class Test {
     private static String print_lambda(ArrayList<Double> best_lambda) {
         String str = "";
         for (double lamda:best_lambda){
-            str  = lamda+ " ";
+            str  += lamda+ " ";
         }
         return str;
     }
@@ -111,11 +110,11 @@ public class Test {
         String[][] subStr = new String[n_gram][2];
         double PP = 0;
         tokens = line.split(" ");
-        for (int i=n_gram;i<tokens.length;i++){
+        for (int i=n_gram;i<=tokens.length;i++){
             for(int j=0;j<n_gram;j++){
-                subStr[j][0] = Parse.subTokens(tokens, i, j);
+                subStr[j][0] = Parse.subTokens(tokens, i-1, j);
                 if (j>0) {
-                    subStr[j][1] = Parse.subTokens(tokens, i - 1, j - 1);
+                    subStr[j][1] = Parse.subTokens(tokens, i - 2, j - 1);
                 }
             }
             for(int j=0;j<n_gram;j++) {
@@ -177,22 +176,26 @@ public class Test {
         String sCurrentLine;
         String line;
         String[] tokens;
-        int n_gram = 0;
+        int n_gram = -2;
         String Start = "\\";
         ArrayList<Double> arr = new ArrayList<>();
         try {
             br = new BufferedReader(new FileReader(path));
-            while ((sCurrentLine = br.readLine()) != null) {
-                line = br.readLine();
-
+            while ((line = br.readLine()) != null) {
                 tokens = line.split(" ");
-                if (tokens.length>0){
-                    if (tokens[0] =="Start"){
+                if (tokens[0].length()>0){
+                    if (tokens[0].substring(0,1).equals(Start)){
                         n_gram ++;
-                    }else if(n_gram>0){
-                        arr.add(0,Double.parseDouble(tokens[0]));
-                        arr.add(1,Double.parseDouble(tokens[2]));
-                        Table[n_gram].put(tokens[1],arr);
+                        if(n_gram>=0){
+                            Table[n_gram] = new HashMap<>();
+                        }
+                    }else if(n_gram>=0){
+                        arr.add(0, Double.parseDouble(tokens[0]));
+                        if(n_gram>0) {
+                            arr.add(1, Double.parseDouble(tokens[tokens.length-1]));
+                        }
+                        Table[n_gram].put(Parse.subTokens(tokens,1+n_gram,n_gram),arr);
+                        arr = new ArrayList<>();
                     }
                 }
             }
