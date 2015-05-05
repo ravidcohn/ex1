@@ -66,7 +66,7 @@ public class Test {
         String str = "";
         for (double lamda:best_lambda){
             str  = lamda+ " ";
-        }
+        }//j
         return str;
     }
 
