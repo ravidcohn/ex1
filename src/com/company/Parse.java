@@ -1,6 +1,5 @@
 package com.company;
 
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -8,28 +7,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
-public class Main {
-
-    public static void main(String[] args) {
-        long time = System.currentTimeMillis();
-        String path = "src/very_small_input";
-        ArrayList<String> corpus = readCorpus(path);
-        String out = "src/out_test.txt";
-        String method = "wb";
-        int n_gram = 5;
-        HashMap<String,ArrayList<Integer>>[] TN_Table =  new HashMap[n_gram-1];
-        HashMap<String,Integer>[] nGramTable = createNGramTable(corpus,n_gram,method,TN_Table);
-        nGramTable = addUnknown(nGramTable);
-        Pr_Methods pr = new Pr_Methods(nGramTable,method,1,out,TN_Table);
-        time = System.currentTimeMillis() - time;
-        double sec = ((double)time)/1000;
-        System.out.println("Run time: "+sec+" sec");
-    }
-    /*
-    Input: text file.
-    Output: Separate the file into lines by DELIMS.
-    Wrap each line with START & END symbol.
-     */
+/**
+ * Created by Ravid on 05/05/2015.
+ */
+public class Parse {
     public static ArrayList<String> readCorpus(String fileName){
         ArrayList<String> lines = new ArrayList<>();
         StringTokenizer st;
@@ -156,7 +137,7 @@ public class Main {
         }
         return nGramTable;
     }
-    private static HashMap<String,Integer>[] addUnknown(HashMap<String, Integer>[] nGramTable) {
+    public static HashMap<String,Integer>[] addUnknown(HashMap<String, Integer>[] nGramTable) {
         int count = 0;
         for (double n : nGramTable[0].values()){
             if(n==1){
