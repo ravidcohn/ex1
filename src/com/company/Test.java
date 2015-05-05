@@ -18,6 +18,7 @@ public class Test {
 
         long time = System.currentTimeMillis();
         double Perplexity = 0;
+        double Best_Perplexity = Double.POSITIVE_INFINITY;
         double N;
         int n_gram;
         String method;
@@ -26,6 +27,7 @@ public class Test {
         method = data[0];
         n_gram = Integer.parseInt(data[1]);
         Table = new HashMap[n_gram];
+        ArrayList<Double> best_lambda = new ArrayList<>();
         ArrayList<ArrayList<Double>> lambda = new ArrayList<>();
         ArrayList<String> corpus = Parse.readCorpus(args[0]);
         N = readNumberOfWords(corpus, n_gram);
@@ -41,6 +43,10 @@ public class Test {
                     Perplexity += evalWB(line, temp_lambda);
                 }
                 Perplexity = 1/Math.pow(Perplexity, -N);
+                if (Perplexity<Best_Perplexity){
+                    Best_Perplexity = Perplexity;
+                    best_lambda = temp_lambda;
+                }
                 System.out.println(Perplexity);
             }
             }else if(method=="ls"){
@@ -52,10 +58,20 @@ public class Test {
          }
 
         Perplexity = 1/Math.pow(Perplexity, -N);
-        System.out.println(Perplexity);
+        System.out.println("Best_Perplexity: " + Best_Perplexity);
+        System.out.println("best_lambda: " + print_lambda(best_lambda));
+        System.out.println("Perplexity: " + Perplexity);
         time = System.currentTimeMillis() - time;
         double sec = ((double)time)/1000;
         System.out.println("Run time: "+sec+" sec");
+    }
+
+    private static String print_lambda(ArrayList<Double> best_lambda) {
+        String str = "";
+        for (double lamda:best_lambda){
+            str  = lamda+ " ";
+        }
+        return str;
     }
 
     private static ArrayList<ArrayList<Double>> interpolation(int n_gram) {
@@ -96,23 +112,28 @@ public class Test {
         //TODO write the function.
         int n_gram = lambda.size();
         String[] tokens;
-        String[] subStr;
-        double[] PP = new double[lambda.size()];
+        String[][] subStr = new String[n_gram][2];
+        double PP = 0;
         tokens = line.split(" ");
-        /*for (int i=0;i<=tokens.length-n_gram){
+        for (int i=n_gram;i<tokens.length;i++){
             for(int j=0;j<n_gram;j++){
-                //subStr = substring(tokens,);
+                subStr[j][0] = Parse.subTokens(tokens, i, j);
+                if (j>0) {
+                    subStr[j][1] = Parse.subTokens(tokens, i - 1, j - 1);
+                }
+            }
+            for(int j=0;j<n_gram;j++) {
+                if (Table[j].get(subStr[j][0]) != null) {
+                    PP += lambda.get(j) * Table[j].get(subStr[j][0]).get(0);
+                } else if (Table[j].get(subStr[j][1]) != null) {
+                    PP += lambda.get(j) * Table[j].get(subStr[j][1]).get(1);
+                }
             }
 
+        }
 
-        }
-            int end = (wi.length()-(tokens[tokens.length-1].length())-1);
-            subStr = wi.substring(0, end);
-        for (int i=0;i<PP.length;i++){
-            PP[i] = Table[i].
-        }
-        */
-        return 500.2;
+
+        return PP;
     }
 /*
     Read T-N gram table.
