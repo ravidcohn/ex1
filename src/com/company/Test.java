@@ -12,10 +12,6 @@ import java.util.HashMap;
 public class Test {
     private static HashMap<String,ArrayList<Double>>[] Table;
     public static void main(String[] args){
-
-        //ArrayList<ArrayList<Double>> allLmbda =  Combination.CreateLmbdaList(2);
-
-
         long time = System.currentTimeMillis();
         double Perplexity = 0;
         double Best_Perplexity = Double.POSITIVE_INFINITY;
@@ -70,7 +66,7 @@ public class Test {
         String str = "";
         for (double lamda:best_lambda){
             str  = lamda+ " ";
-        }//j
+        }
         return str;
     }
 
