@@ -93,23 +93,28 @@ public class Test {
         //TODO write the function.
         int n_gram = lambda.size();
         String[] tokens;
-        String[] subStr;
-        double[] PP = new double[lambda.size()];
+        String[][] subStr = new String[n_gram][2];
+        double PP = 0;
         tokens = line.split(" ");
-        /*for (int i=0;i<=tokens.length-n_gram){
+        for (int i=n_gram;i<tokens.length;i++){
             for(int j=0;j<n_gram;j++){
-                //subStr = substring(tokens,);
+                subStr[j][0] = Parse.subTokens(tokens, i, j);
+                if (j>0) {
+                    subStr[j][1] = Parse.subTokens(tokens, i - 1, j - 1);
+                }
+            }
+            for(int j=0;j<n_gram;j++) {
+                if (Table[j].get(subStr[j][0]) != null) {
+                    PP += lambda.get(j) * Table[j].get(subStr[j][0]).get(0);
+                } else if (Table[j].get(subStr[j][1]) != null) {
+                    PP += lambda.get(j) * Table[j].get(subStr[j][1]).get(1);
+                }
             }
 
+        }
 
-        }
-            int end = (wi.length()-(tokens[tokens.length-1].length())-1);
-            subStr = wi.substring(0, end);
-        for (int i=0;i<PP.length;i++){
-            PP[i] = Table[i].
-        }
-        */
-        return 500.2;
+
+        return PP;
     }
 /*
     Read T-N gram table.

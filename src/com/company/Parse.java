@@ -108,7 +108,7 @@ public class Parse {
                             arr.add(0);
                             TN_Table[n_gram-2].put(subStr, arr);
                         }
-                        TN_Table[n_gram-2].get(subStr).set(0, TN_Table[n_gram - 2].get(subStr).get(0)+1);
+                        TN_Table[n_gram-2].get(subStr).set(0, TN_Table[n_gram - 2].get(subStr).get(0) + 1);
                     }
                     wordCount.put(str, wordCount.get(str) + 1);
                     TN_Table[n_gram-2].get(subStr).set(1, TN_Table[n_gram - 2].get(subStr).get(1) + 1);
@@ -148,5 +148,12 @@ public class Parse {
         return nGramTable;
     }
 
+    public static String subTokens(String[] tokens, int start, int back){
+        String str = "";
+        for (int i=start-back;i<=start;i++){
+            str = str + tokens[i] + " ";
+        }
+        return str;
+    }
 
 }
