@@ -38,8 +38,8 @@ public class Test {
                 for (String line: corpus) {
                     Perplexity += evalWB(line, temp_lambda);
                 }
-                Perplexity = Math.pow(10,Perplexity);
-                Perplexity = 1/Math.pow(Perplexity, 1/N);
+                Perplexity = Math.pow(10,Perplexity/N);
+                Perplexity = 1/Perplexity;
                 if (Perplexity<Best_Perplexity){
                     Best_Perplexity = Perplexity;
                     best_lambda = temp_lambda;
@@ -50,7 +50,8 @@ public class Test {
                 for (String line: corpus) {
                     Perplexity += evalLS(line, n_gram);
                  }
-            Perplexity = 1/Math.pow(Perplexity, -N);
+            Perplexity = Math.pow(10,Perplexity/N);
+            Perplexity = 1/Perplexity;
             System.out.println(Perplexity);
          }
 
