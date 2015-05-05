@@ -22,8 +22,7 @@ public class Test {
         method = data[0];
         n_gram = Integer.parseInt(data[1]);
         Table = new HashMap[n_gram];
-        ArrayList<ArrayList<Double>> lambda;
-        ArrayList<Double> temp_lambda;
+        ArrayList<ArrayList<Double>> lambda = new ArrayList<>();
         ArrayList<String> corpus = Parse.readCorpus(args[0]);
         N = readNumberOfWords(corpus, n_gram);
         if (method=="wb"){
@@ -33,16 +32,16 @@ public class Test {
         }
         lambda = interpolation(n_gram);
         if (method=="wb") {
-            for (temp_lambda:lambda) {
+            for (ArrayList<Double> temp_lambda:lambda) {
                 for (String line: corpus) {
-                    Perplexity += evalLS(line, temp_lambda);
+                    Perplexity += evalWB(line, temp_lambda);
                 }
                 Perplexity = 1/Math.pow(Perplexity, -N);
                 System.out.println(Perplexity);
             }
             }else if(method=="ls"){
                 for (String line: corpus) {
-                    Perplexity += evalWB(line, n_gram);
+                    Perplexity += evalLS(line, n_gram);
                  }
             Perplexity = 1/Math.pow(Perplexity, -N);
             System.out.println(Perplexity);
@@ -56,7 +55,7 @@ public class Test {
     }
 
     private static ArrayList<ArrayList<Double>> interpolation(int n_gram) {
-        return null;
+        return new ArrayList<>();
     }
 
     private static double readNumberOfWords(ArrayList<String> corpus,int n_gram) {
@@ -97,9 +96,9 @@ public class Test {
         String[] subStr;
         double[] PP = new double[lambda.size()];
         tokens = line.split(" ");
-        for (int i=0;i<=tokens.length-n_gram){
+        /*for (int i=0;i<=tokens.length-n_gram){
             for(int j=0;j<n_gram;j++){
-                subStr = substring(tokens,);
+                //subStr = substring(tokens,);
             }
 
 
@@ -109,6 +108,8 @@ public class Test {
         for (int i=0;i<PP.length;i++){
             PP[i] = Table[i].
         }
+        */
+        return 500.2;
     }
 /*
     Read T-N gram table.
