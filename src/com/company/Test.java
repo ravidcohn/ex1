@@ -13,7 +13,7 @@ public class Test {
     private static HashMap<String,ArrayList<Double>>[] Table;
     public static void main(String[] args){
 
-        ArrayList<ArrayList<Double>> allLmbda =  Combination.CreateLmbdaList(2);
+        //ArrayList<ArrayList<Double>> allLmbda =  Combination.CreateLmbdaList(2);
 
 
         long time = System.currentTimeMillis();
@@ -36,7 +36,7 @@ public class Test {
         }else if(method=="ls"){
             readLS(args[1]);
         }
-        lambda = interpolation(n_gram);
+        lambda = Combination.CreateLmbdaList(n_gram);
         if (method=="wb") {
             for (ArrayList<Double> temp_lambda:lambda) {
                 for (String line: corpus) {
