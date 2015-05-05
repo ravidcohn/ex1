@@ -12,6 +12,10 @@ import java.util.HashMap;
 public class Test {
     private static HashMap<String,ArrayList<Double>>[] Table;
     public static void main(String[] args){
+
+        ArrayList<ArrayList<Double>> allLmbda =  Combination.CreateLmbdaList(2);
+
+
         long time = System.currentTimeMillis();
         double Perplexity = 0;
         double N;
@@ -59,12 +63,11 @@ public class Test {
     }
 
     private static double readNumberOfWords(ArrayList<String> corpus,int n_gram) {
-        //TODO n_gram
         double N = 0;
         String[] tokens;
         for (String line: corpus){
             tokens = line.split(" ");
-            N +=tokens.length;
+                N+= tokens.length - n_gram + 1;
         }
         return N;
     }
@@ -206,5 +209,7 @@ public class Test {
         }
         return data;
     }
+
+
 
 }
