@@ -25,15 +25,23 @@ public class Pr_Methods {
                 file.delete();
             }
             file.createNewFile();
-            fileWritter = new FileWriter(outPath, true);
+            fileWritter = new FileWriter(outPath, false);
             bufferWritter = new BufferedWriter(fileWritter);
 
             if(method.equals("wb")) {
-                saveLine("wb "+n_gram);
+                saveLine("wb "+n_gram+"\n");
+                bufferWritter.close();
+                fileWritter.close();
+                fileWritter = new FileWriter(outPath, true);
+                bufferWritter = new BufferedWriter(fileWritter);
                 WittenBell(nGramTable,TN_Table);
             }
             else{
-                saveLine("ls "+n_gram+" "+lmbda);
+                saveLine("ls "+n_gram+" "+lmbda+"\n");
+                bufferWritter.close();
+                fileWritter.close();
+                fileWritter = new FileWriter(outPath, true);
+                bufferWritter = new BufferedWriter(fileWritter);
                 LidstonesLaw(nGramTable,lmbda);
             }
             bufferWritter.close();
@@ -51,12 +59,13 @@ public class Pr_Methods {
         String str = "";
         DecimalFormat df = new DecimalFormat("#.####");
         df.setRoundingMode(RoundingMode.CEILING);
+        double v = nGramTable[0].keySet().size();
         double pr = 0;
         for (int i = 0; i < nGramTable.length; i++) {
             saveLine("\\" + (i + 1) + "-gram:\n");
-            double lmbdaBN = lmbda * Math.pow(nGramTable[i].keySet().size(), (i + 1)) + N[i];
-            pr = lmbda/lmbdaBN;
-            saveLine("unseen: " + pr + "\n");
+            double lmbdaBN = lmbda * Math.pow(v,(i+1)) +N[i];
+            pr = lmbda / lmbdaBN + 0.000001;
+            saveLine(df.format(Math.log10(pr)) + " <unseen>:" + "\n");
             for (String wi : nGramTable[i].keySet()) {
                 pr = (double) nGramTable[i].get(wi) + lmbda;
                 pr /= lmbdaBN ;
@@ -84,10 +93,12 @@ public class Pr_Methods {
                     tokens = wi.split(" ");
                     int end = (wi.length()-(tokens[tokens.length-1].length())-1);
                     subStr = wi.substring(0, end);
+                    pr /= (TN_Table[i-1].get(subStr).get(0)+TN_Table[i-1].get(subStr).get(1));
                     Z_i1 = N[i-1] - TN_Table[i-1].get(subStr).get(0);
                     pr2 = TN_Table[i-1].get(subStr).get(0)/(Z_i1*(TN_Table[i-1].get(subStr).get(0)+TN_Table[i-1].get(subStr).get(1)));
                     str = df.format(Math.log10(pr)) + " " + wi + " "+df.format(Math.log10(pr2)) + "\n";
                 }else{
+                    pr = pr/(N[i]);
                     str = df.format(Math.log10(pr)) + " " + wi + "\n";
                 }
                 saveLine(str);
