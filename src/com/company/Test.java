@@ -22,29 +22,45 @@ public class Test {
         method = data[0];
         n_gram = Integer.parseInt(data[1]);
         Table = new HashMap[n_gram];
+        ArrayList<ArrayList<Double>> lambda;
+        ArrayList<Double> temp_lambda;
         ArrayList<String> corpus = Parse.readCorpus(args[0]);
-        N = readNumberOfWords(corpus);
+        N = readNumberOfWords(corpus, n_gram);
         if (method=="wb"){
             readWB(args[1]);
         }else if(method=="ls"){
             readLS(args[1]);
         }
-        for (String line: corpus){
-            if (method=="wb") {
-                Perplexity += evalLS(line,n_gram);
-            }else if(method=="ls"){
-                Perplexity += evalWB(line);
+        lambda = interpolation(n_gram);
+        if (method=="wb") {
+            for (temp_lambda:lambda) {
+                for (String line: corpus) {
+                    Perplexity += evalLS(line, temp_lambda);
+                }
+                Perplexity = 1/Math.pow(Perplexity, -N);
+                System.out.println(Perplexity);
             }
-        }
+            }else if(method=="ls"){
+                for (String line: corpus) {
+                    Perplexity += evalWB(line, n_gram);
+                 }
+            Perplexity = 1/Math.pow(Perplexity, -N);
+            System.out.println(Perplexity);
+         }
 
         Perplexity = 1/Math.pow(Perplexity, -N);
-        System.out.println("Perplexity: "+Perplexity);
+        System.out.println(Perplexity);
         time = System.currentTimeMillis() - time;
         double sec = ((double)time)/1000;
         System.out.println("Run time: "+sec+" sec");
     }
 
-    private static double readNumberOfWords(ArrayList<String> corpus) {
+    private static ArrayList<ArrayList<Double>> interpolation(int n_gram) {
+        return null;
+    }
+
+    private static double readNumberOfWords(ArrayList<String> corpus,int n_gram) {
+        //TODO n_gram
         double N = 0;
         String[] tokens;
         for (String line: corpus){
@@ -74,9 +90,25 @@ public class Test {
         return pr;
     }
 
-    private static double evalWB(String line){
+    private static double evalWB(String line, ArrayList<Double> lambda){
         //TODO write the function.
-        return 0;
+        int n_gram = lambda.size();
+        String[] tokens;
+        String[] subStr;
+        double[] PP = new double[lambda.size()];
+        tokens = line.split(" ");
+        for (int i=0;i<=tokens.length-n_gram){
+            for(int j=0;j<n_gram;j++){
+                subStr = substring(tokens,);
+            }
+
+
+        }
+            int end = (wi.length()-(tokens[tokens.length-1].length())-1);
+            subStr = wi.substring(0, end);
+        for (int i=0;i<PP.length;i++){
+            PP[i] = Table[i].
+        }
     }
 /*
     Read T-N gram table.
@@ -116,23 +148,32 @@ public class Test {
             }
         }
     }
-/*
-    read n gram table.
- */
+    /*
+        read n gram table.
+     */
     private static void readWB(String path) {
         BufferedReader br = null;
         String sCurrentLine;
         String line;
         String[] tokens;
         int n_gram = 0;
-        String s;
+        String Start = "\\";
+        ArrayList<Double> arr = new ArrayList<>();
         try {
             br = new BufferedReader(new FileReader(path));
             while ((sCurrentLine = br.readLine()) != null) {
                 line = br.readLine();
 
                 tokens = line.split(" ");
-
+                if (tokens.length>0){
+                    if (tokens[0] =="Start"){
+                        n_gram ++;
+                    }else if(n_gram>0){
+                        arr.add(0,Double.parseDouble(tokens[0]));
+                        arr.add(1,Double.parseDouble(tokens[2]));
+                        Table[n_gram].put(tokens[1],arr);
+                    }
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
