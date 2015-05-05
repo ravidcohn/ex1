@@ -1,6 +1,5 @@
 package com.company;
 
-import com.sun.org.apache.xerces.internal.xs.StringList;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
