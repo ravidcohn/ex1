@@ -13,7 +13,8 @@ public class Train {
 
     public static void main(String[] args) {
         long time = System.currentTimeMillis();
-        String path = "src/very_small_input";
+        String path = "src/en_text.corp";
+      //  String path = "src/very_small_input";
         ArrayList<String> corpus = Parse.readCorpus(path);
         String out = "src/out_test.txt";
         String method = "wb";

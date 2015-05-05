@@ -38,11 +38,13 @@ public class Test {
                 for (String line: corpus) {
                     Perplexity += evalWB(line, temp_lambda);
                 }
-                Perplexity = 1/Math.pow(Perplexity, -N);
+                Perplexity = Math.pow(10,Perplexity);
+                Perplexity = 1/Math.pow(Perplexity, 1/N);
                 if (Perplexity<Best_Perplexity){
                     Best_Perplexity = Perplexity;
                     best_lambda = temp_lambda;
                 }
+                Perplexity = 0;
             }
             }else if(method.equals("ls")){
                 for (String line: corpus) {
@@ -119,16 +121,25 @@ public class Test {
             }
             for(int j=0;j<n_gram;j++) {
                 if (Table[j].get(subStr[j][0]) != null) {
-                    PP += lambda.get(j) * Table[j].get(subStr[j][0]).get(0);
-                } else if (Table[j].get(subStr[j][1]) != null) {
-                    PP += lambda.get(j) * Table[j].get(subStr[j][1]).get(1);
+                    PP += lambda.get(j) * Math.pow(10,Table[j].get(subStr[j][0]).get(0));
+                } else if(j==0) {
+                    PP += lambda.get(j) * Math.pow(10,Table[j].get("<UNK> ").get(0));
+                }else if(j==1 && Table[j-1].get(subStr[j][1]) != null){
+                    PP += lambda.get(j) * Math.pow(10, Table[j-1].get(subStr[j][1]).get(0));
+                }else if(j==1){
+                    PP += lambda.get(j) * Math.pow(10,Table[j-1].get("<UNK> ").get(0));
+                }else  if(Table[j-1].get(subStr[j][1]) != null) {
+                    PP += lambda.get(j) * Math.pow(10, Table[j-1].get(subStr[j][1]).get(1));
                 }
             }
 
         }
 
-
-        return PP;
+        if (PP==0) {
+            return 0;
+        }else {
+            return Math.log10(PP);
+        }
     }
 /*
     Read T-N gram table.
