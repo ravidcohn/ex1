@@ -62,14 +62,29 @@ public class Pr_Methods {
     }
 
     private void WittenBell(HashMap<String,Integer>[] nGramTable,HashMap<String,ArrayList<Integer>>[] TN_Table){
-        countN(nGramTable);
+        double[] N = countN(nGramTable);
         String str = "";
         DecimalFormat df = new DecimalFormat("#.####");
         df.setRoundingMode(RoundingMode.CEILING);
-        for (int i = 0; i < nGramTable.length; i++) {
+        saveLine("\\1-gram:\n");
+        for (String wi : nGramTable[0].keySet()) {
+            double pr = (double) nGramTable[0].get(wi)/(N[0]);
+            str = df.format(Math.log10(pr)) + " " + wi+"\n";
+            saveLine(str);
+        }
+        saveLine("\n");
+
+
+        for (int i = 1; i < nGramTable.length; i++) {
             saveLine("\\" + (i + 1) + "-gram:\n");
             for (String wi : nGramTable[i].keySet()) {
                 double pr = (double) nGramTable[i].get(wi);
+                int end = wi.length() - 2;
+                while(str.charAt(end)!=' '){
+                    end--;
+                }
+                String subStr = str.substring(0,(end+1));
+                pr /=(double)(TN_Table[i-1].get(subStr).get(0)+TN_Table[i-1].get(subStr).get(1));
                 str = df.format(Math.log10(pr)) + " " + wi+"\n";
                 saveLine(str);
             }
