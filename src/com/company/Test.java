@@ -12,7 +12,21 @@ import java.util.HashMap;
  */
 public class Test {
     private static HashMap<String,ArrayList<Double>>[] Table;
+
     public static void main(String[] args){
+        ArrayList<Point2D.Double[]>allVals = new ArrayList<>();
+        for (int i = 2; i < 5; i++) {
+            Point2D.Double[] vals = lmbdaTestForLidstone("src/en_text.corp","src/en.test",i);
+            allVals.add(vals);
+            System.out.println("n-gram: " + i);
+            for (int j = 0; j < vals.length; j++) {
+                System.out.println("lmbda: "+vals[i].getX()+"   ,Perplexity: "+vals[i].getY());
+            }
+        }
+
+    }
+
+/*    public static void main(String[] args){
         long time = System.currentTimeMillis();
         double Perplexity = 0;
         double Best_Perplexity = Double.POSITIVE_INFINITY;
@@ -64,7 +78,7 @@ public class Test {
         double sec = ((double)time)/1000;
         System.out.println("Run time: "+sec+" sec");
     }
-
+*/
     private static String print_lambda(ArrayList<Double> best_lambda) {
         String str = "";
         for (double lamda:best_lambda){
@@ -97,12 +111,12 @@ public class Test {
             for (int j = 0; j < n_gram ; j++) {
                 tLine += tokes[i+j] + " ";
             }
-            if(Table[n_gram-1].get(tLine).get(0) == null){
+            if(Table[n_gram-1].get(tLine) == null || Table[n_gram-1].get(tLine).get(0) == null){
                 if(i > 0) {
                     pr = Table[n_gram - 1].get("<unseen>:").get(0);
                 }
                 else{
-                    pr = Table[n_gram - 1].get("<UNK> ").get(0);
+                    pr = Table[0].get("<UNK>").get(0);
                 }
             }
             else{
@@ -130,11 +144,11 @@ public class Test {
                 if (Table[j].get(subStr[j][0]) != null) {
                     PP += lambda.get(j) * Math.pow(10,Table[j].get(subStr[j][0]).get(0));
                 } else if(j==0) {
-                    PP += lambda.get(j) * Math.pow(10,Table[j].get("<UNK> ").get(0));
+                    PP += lambda.get(j) * Math.pow(10,Table[j].get("<UNK>").get(0));
                 }else if(j==1 && Table[j-1].get(subStr[j][1]) != null){
                     PP += lambda.get(j) * Math.pow(10, Table[j-1].get(subStr[j][1]).get(0));
                 }else if(j==1){
-                    PP += lambda.get(j) * Math.pow(10,Table[j-1].get("<UNK> ").get(0));
+                    PP += lambda.get(j) * Math.pow(10,Table[j-1].get("<UNK>").get(0));
                 }else  if(Table[j-1].get(subStr[j][1]) != null) {
                     PP += lambda.get(j) * Math.pow(10, Table[j-1].get(subStr[j][1]).get(1));
                 }
@@ -162,8 +176,9 @@ public class Test {
         ArrayList<Double> list;
         try {
             br = new BufferedReader(new FileReader(path));
-            while ((sCurrentLine = br.readLine()) != null) {
-                line = br.readLine();
+            br.readLine();
+            while ((line = br.readLine()) != null) {
+                //line = br.readLine();
                 if(line.length() > 0){
                     if(line.charAt(0) == '\\'){
                         count++;
@@ -269,17 +284,18 @@ public class Test {
         Pr_Methods pr = null;
 
         ArrayList<String> test_corpus = Parse.readCorpus(test_inPath);
-        int count =0;
-        for (double lmbda = start; lmbda <= end; lmbda+= jump, count++) {
+
+        double[] lmbda = new double[]{0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1};
+        for (int count =0; count < lmbda.length; count++) {
             Table = new HashMap[n_gram];
             double Perplexity = 0;
-            String outP = out+lmbda+".txt";
-            pr = new Pr_Methods(nGramTable,method,lmbda,outP,TN_Table);
+            String outP = out+lmbda[count]+".txt";
+            pr = new Pr_Methods(nGramTable,method,lmbda[count],outP,TN_Table);
             readLS(outP);
             for (String line: test_corpus) {
                 Perplexity += evalLS(line, n_gram);
             }
-            lmbdaXY[count].setLocation(lmbda,Perplexity);
+            lmbdaXY[count] = new Point2D.Double(lmbda[count],Perplexity);
         }
 
         return lmbdaXY;

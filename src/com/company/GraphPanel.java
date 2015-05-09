@@ -150,13 +150,13 @@ public class GraphPanel extends JPanel {
     }
 
     private static void createAndShowGui() {
-        /*List<Double> scores = new ArrayList<>();
+        List<Double> scores = new ArrayList<>();
         Random random = new Random();
         int maxDataPoints = 40;
         int maxScore = 10;
-        for (int i = 0; i < maxDataPoints; i++) {
+        /*for (int i = 0; i < maxDataPoints; i++) {
             scores.add((double) random.nextDouble() * maxScore);
-//            scores.add((double) i);
+            scores.add((double) i);
         }*/
         scores.add((double)34);
         scores.add((double) 56);
@@ -171,10 +171,11 @@ public class GraphPanel extends JPanel {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
+        createAndShowGui();
+        /*SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 createAndShowGui();
             }
-        });
+        });*/
     }
 }
