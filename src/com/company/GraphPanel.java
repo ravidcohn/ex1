@@ -74,6 +74,7 @@ public class GraphPanel extends JPanel {
         }
 
         // and for x axis
+        double numX = 0;
         for (int i = 0; i < scores.size(); i++) {
             if (scores.size() > 1) {
                 int x0 = i * (getWidth() - padding * 2 - labelPadding) / (scores.size() - 1) + padding + labelPadding;
@@ -84,7 +85,8 @@ public class GraphPanel extends JPanel {
                     g2.setColor(gridColor);
                     g2.drawLine(x0, getHeight() - padding - labelPadding - 1 - pointWidth, x1, padding);
                     g2.setColor(Color.BLACK);
-                    String xLabel = i + "";
+                    String xLabel = numX/10 + "";
+                    numX ++;
                     FontMetrics metrics = g2.getFontMetrics();
                     int labelWidth = metrics.stringWidth(xLabel);
                     g2.drawString(xLabel, x0 - labelWidth / 2, y0 + metrics.getHeight() + 3);
@@ -149,7 +151,7 @@ public class GraphPanel extends JPanel {
         return scores;
     }
 
-    private static void createAndShowGui() {
+    public static void createAndShowGui(List<Double> scores) {
         /*List<Double> scores = new ArrayList<>();
         Random random = new Random();
         int maxDataPoints = 40;
@@ -158,8 +160,6 @@ public class GraphPanel extends JPanel {
             scores.add((double) random.nextDouble() * maxScore);
 //            scores.add((double) i);
         }*/
-        scores.add((double)34);
-        scores.add((double) 56);
         GraphPanel mainPanel = new GraphPanel(scores);
         mainPanel.setPreferredSize(new Dimension(800, 600));
         JFrame frame = new JFrame("DrawGraph");
@@ -168,12 +168,12 @@ public class GraphPanel extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-    }//k
+    }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                createAndShowGui();
+                createAndShowGui(scores);
             }
         });
     }
