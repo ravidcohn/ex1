@@ -284,6 +284,7 @@ public class Test {
         Pr_Methods pr = null;
         ArrayList<String> test_corpus = Parse.readCorpus(test_inPath);
 
+        double N = readNumberOfWords(test_corpus, n_gram);
         double[] lmbda = new double[]{0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1};
         for (int count =0; count < lmbda.length; count++) {
             Table = new HashMap[n_gram];
@@ -294,6 +295,8 @@ public class Test {
             for (String line: test_corpus) {
                 Perplexity += evalLS(line, n_gram);
             }
+            Perplexity = Math.pow(10,Perplexity/N);
+            Perplexity = 1/Perplexity;
             lmbdaXY[count] = new Point2D.Double(lmbda[count],Perplexity);
         }
 
