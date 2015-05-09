@@ -163,6 +163,9 @@ public class Parse {
         for (int i=start-back;i<=start;i++){
             str = str + tokens[i] + " ";
         }
+        if(str.length() > 0) {
+            str = str.substring(0, str.length() - 1);
+        }
         return str;
     }
 
