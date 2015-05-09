@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -176,5 +177,13 @@ public class GraphPanel extends JPanel {
                 createAndShowGui(scores);
             }
         });
+    }
+
+    public static void plot(Point2D.Double[] vals){
+        List<Double> val = new ArrayList<>();
+        for (int i = 0; i < vals.length; i++){
+            val.add(vals[i].getY());
+        }
+         createAndShowGui(val);
     }
 }

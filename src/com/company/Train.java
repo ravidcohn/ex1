@@ -18,7 +18,7 @@ public class Train {
         String path = "src/en_text.corp";
         ArrayList<String> corpus = Parse.readCorpus(path);
         String out = "src/out_test.txt";
-        String method = "ls";
+        String method = "wb";
         int n_gram = 4;
         double lmbda = 0.5;
         HashMap<String,ArrayList<Integer>>[] TN_Table =  new HashMap[n_gram-1];

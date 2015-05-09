@@ -16,17 +16,20 @@ public class Test {
     public static void main(String[] args){
 //        ArrayList<Point2D.Double[]>allVals = new ArrayList<>();
         for (int i = 2; i < 5; i++) {
-            Point2D.Double[] vals = lmbdaTestForLidstone("src/trainLs","src/testLs",i);
+//          Point2D.Double[] vals = lmbdaTestForLidstone("src/en_text.corp","src/en.test",i);
+//            Point2D.Double[] vals = lmbdaTestForLidstone("src/trainLs","src/testLs",i);
+            Point2D.Double[] vals = lmbdaTestForLidstone("src/ca_text.corp","src/ca.test",i);
   //          allVals.add(vals);
             System.out.println("n-gram: " + i);
+            GraphPanel.plot(vals);
             for (int j = 0; j < vals.length; j++) {
                 System.out.println("lmbda: "+vals[j].getX()+"   ,Perplexity: "+vals[j].getY());
             }
         }
 
     }
-
-/*    public static void main(String[] args){
+/*
+    public static void main(String[] args){
         long time = System.currentTimeMillis();
         double Perplexity = 0;
         double Best_Perplexity = Double.POSITIVE_INFINITY;
@@ -78,7 +81,8 @@ public class Test {
         double sec = ((double)time)/1000;
         System.out.println("Run time: "+sec+" sec");
     }
-*/
+    */
+
     private static String print_lambda(ArrayList<Double> best_lambda) {
         String str = "";
         for (double lamda:best_lambda){
