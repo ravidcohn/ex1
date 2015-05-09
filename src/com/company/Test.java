@@ -16,7 +16,7 @@ public class Test {
     public static void main(String[] args){
         ArrayList<Point2D.Double[]>allVals = new ArrayList<>();
         for (int i = 2; i < 5; i++) {
-            Point2D.Double[] vals = lmbdaTestForLidstone("src/en_text.corp","src/en.test",i);
+            Point2D.Double[] vals = lmbdaTestForLidstone("src/trainLs","src/testLs",i);
             allVals.add(vals);
             System.out.println("n-gram: " + i);
             for (int j = 0; j < vals.length; j++) {
@@ -111,16 +111,16 @@ public class Test {
             for (int j = 0; j < n_gram ; j++) {
                 tLine += tokes[i+j] + " ";
             }
-            if(Table[n_gram-1].get(tLine) == null || Table[n_gram-1].get(tLine).get(0) == null){
-                if(i > 0) {
-                    pr = Table[n_gram - 1].get("<unseen>:").get(0);
+            if(Table[n_gram-1].get(tLine) == null){
+                if(n_gram > 1) {
+                    pr += Table[n_gram - 1].get("<unseen>:").get(0);
                 }
                 else{
-                    pr = Table[0].get("<UNK>").get(0);
+                    pr += Table[0].get("<UNK>").get(0);
                 }
             }
             else{
-                pr = Table[n_gram-1].get(tLine).get(0);
+                pr += Table[n_gram-1].get(tLine).get(0);
             }
         }
         return pr;
@@ -144,11 +144,11 @@ public class Test {
                 if (Table[j].get(subStr[j][0]) != null) {
                     PP += lambda.get(j) * Math.pow(10,Table[j].get(subStr[j][0]).get(0));
                 } else if(j==0) {
-                    PP += lambda.get(j) * Math.pow(10,Table[j].get("<UNK>").get(0));
+                    PP += lambda.get(j) * Math.pow(10,Table[j].get("<UNK> ").get(0));
                 }else if(j==1 && Table[j-1].get(subStr[j][1]) != null){
                     PP += lambda.get(j) * Math.pow(10, Table[j-1].get(subStr[j][1]).get(0));
                 }else if(j==1){
-                    PP += lambda.get(j) * Math.pow(10,Table[j-1].get("<UNK>").get(0));
+                    PP += lambda.get(j) * Math.pow(10,Table[j-1].get("<UNK> ").get(0));
                 }else  if(Table[j-1].get(subStr[j][1]) != null) {
                     PP += lambda.get(j) * Math.pow(10, Table[j-1].get(subStr[j][1]).get(1));
                 }

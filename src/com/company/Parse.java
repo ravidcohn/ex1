@@ -140,13 +140,14 @@ public class Parse {
     public static HashMap<String,Integer>[] addUnknown(HashMap<String, Integer>[] nGramTable) {
         int count = 0;
         HashMap<String, Integer> temp = (HashMap<String, Integer>) nGramTable[0].clone();
-        /*for (double n : nGramTable[0].values()){
+        for (double n : nGramTable[0].values()){
             if(n==1){
                 count +=n;
             }
         }
         nGramTable[0].put("<UNK>", count);
-        */
+
+        /*
         for (String str : nGramTable[0].keySet()){
             if(nGramTable[0].get(str)==1){
                 temp.remove(str);
@@ -155,6 +156,7 @@ public class Parse {
         }
         temp.put("<UNK>", count);
         nGramTable[0] = temp;
+        */
         return nGramTable;
     }
 
@@ -162,9 +164,6 @@ public class Parse {
         String str = "";
         for (int i=start-back;i<=start;i++){
             str = str + tokens[i] + " ";
-        }
-        if(str.length() > 0) {
-            str = str.substring(0, str.length() - 1);
         }
         return str;
     }
