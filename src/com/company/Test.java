@@ -20,7 +20,7 @@ public class Test {
             allVals.add(vals);
             System.out.println("n-gram: " + i);
             for (int j = 0; j < vals.length; j++) {
-                System.out.println("lmbda: "+vals[i].getX()+"   ,Perplexity: "+vals[i].getY());
+                System.out.println("lmbda: "+vals[j].getX()+"   ,Perplexity: "+vals[j].getY());
             }
         }
 
