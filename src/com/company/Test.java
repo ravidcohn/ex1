@@ -14,10 +14,10 @@ public class Test {
     private static HashMap<String,ArrayList<Double>>[] Table;
 
     public static void main(String[] args){
-        ArrayList<Point2D.Double[]>allVals = new ArrayList<>();
+//        ArrayList<Point2D.Double[]>allVals = new ArrayList<>();
         for (int i = 2; i < 5; i++) {
             Point2D.Double[] vals = lmbdaTestForLidstone("src/trainLs","src/testLs",i);
-            allVals.add(vals);
+  //          allVals.add(vals);
             System.out.println("n-gram: " + i);
             for (int j = 0; j < vals.length; j++) {
                 System.out.println("lmbda: "+vals[j].getX()+"   ,Perplexity: "+vals[j].getY());
