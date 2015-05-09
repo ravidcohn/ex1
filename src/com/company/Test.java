@@ -95,7 +95,7 @@ public class Test {
         for (int i = 0; i <= end; i++) {
             tLine = "";
             for (int j = 0; j < n_gram ; j++) {
-                tLine += tokes[i+j];
+                tLine += tokes[i+j] + " ";
             }
             if(Table[n_gram-1].get(tLine).get(0) == null){
                 if(i > 0) {
@@ -167,7 +167,9 @@ public class Test {
                 if(line.length() > 0){
                     if(line.charAt(0) == '\\'){
                         count++;
-                    }
+                        if(count>=0){
+                            Table[count] = new HashMap<>();
+                        }                    }
                     else if(count >= 0) {
                         tokens = line.split(" ");
                         list = new ArrayList<>();
