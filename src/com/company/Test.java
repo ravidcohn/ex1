@@ -282,7 +282,6 @@ public class Test {
         HashMap<String,Integer>[] nGramTable = Parse.createNGramTable(corpus, n_gram, method, TN_Table);
         nGramTable = Parse.addUnknown(nGramTable);
         Pr_Methods pr = null;
-
         ArrayList<String> test_corpus = Parse.readCorpus(test_inPath);
         double N = readNumberOfWords(test_corpus, n_gram);
         double[] lmbda = new double[]{0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1};
