@@ -1,5 +1,6 @@
 package com.company;
 
+import java.awt.geom.Point2D;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -97,7 +98,12 @@ public class Test {
                 tLine += tokes[i+j];
             }
             if(Table[n_gram-1].get(tLine).get(0) == null){
-                pr = Table[n_gram-1].get("<unseen>:").get(0);
+                if(i > 0) {
+                    pr = Table[n_gram - 1].get("<unseen>:").get(0);
+                }
+                else{
+                    pr = Table[n_gram - 1].get("<UNK> ").get(0);
+                }
             }
             else{
                 pr = Table[n_gram-1].get(tLine).get(0);
@@ -206,7 +212,7 @@ public class Test {
                         if(n_gram>0) {
                             arr.add(1, Double.parseDouble(tokens[tokens.length-1]));
                         }
-                        Table[n_gram].put(Parse.subTokens(tokens,1+n_gram,n_gram),arr);
+                        Table[n_gram].put(Parse.subTokens(tokens, 1 + n_gram, n_gram), arr);
                         arr = new ArrayList<>();
                     }
                 }
@@ -242,6 +248,39 @@ public class Test {
         return data;
     }
 
+    public static Point2D.Double[] lmbdaTestForLidstone(String lm_inPath,String test_inPath,int n_gram){
 
+        double start = 0;
+        double end = 1;
+        double jump = 0.1;
+        int size =(int)((end - start)/jump) + 1;
+        Point2D.Double[] lmbdaXY = new Point2D.Double[size];
+
+
+        ArrayList<String> corpus = Parse.readCorpus(lm_inPath);
+        String out = "src/lidstonLmbdaTest_";
+        String method = "ls";
+
+        HashMap<String,ArrayList<Integer>>[] TN_Table =  new HashMap[n_gram-1];
+        HashMap<String,Integer>[] nGramTable = Parse.createNGramTable(corpus, n_gram, method, TN_Table);
+        nGramTable = Parse.addUnknown(nGramTable);
+        Pr_Methods pr = null;
+
+        ArrayList<String> test_corpus = Parse.readCorpus(test_inPath);
+        int count =0;
+        for (double lmbda = start; lmbda <= end; lmbda+= jump, count++) {
+            Table = new HashMap[n_gram];
+            double Perplexity = 0;
+            String outP = out+lmbda+".txt";
+            pr = new Pr_Methods(nGramTable,method,lmbda,outP,TN_Table);
+            readLS(outP);
+            for (String line: test_corpus) {
+                Perplexity += evalLS(line, n_gram);
+            }
+            lmbdaXY[count].setLocation(lmbda,Perplexity);
+        }
+
+        return lmbdaXY;
+    }
 
 }

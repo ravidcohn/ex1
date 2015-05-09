@@ -65,7 +65,9 @@ public class Pr_Methods {
             saveLine("\\" + (i + 1) + "-gram:\n");
             double lmbdaBN = lmbda * Math.pow(v,(i+1)) +N[i];
             pr = lmbda / lmbdaBN + 0.000001;
-            saveLine(df.format(Math.log10(pr)) + " <unseen>:" + "\n");
+            if(i > 0) {
+                saveLine(df.format(Math.log10(pr)) + " <unseen>:" + "\n");
+            }
             for (String wi : nGramTable[i].keySet()) {
                 pr = (double) nGramTable[i].get(wi) + lmbda;
                 pr /= lmbdaBN ;
