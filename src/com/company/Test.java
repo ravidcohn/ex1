@@ -1,5 +1,6 @@
 package com.company;
 
+import java.awt.geom.Point2D;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -11,6 +12,23 @@ import java.util.HashMap;
  */
 public class Test {
     private static HashMap<String,ArrayList<Double>>[] Table;
+
+    public static void main(String[] args){
+//        ArrayList<Point2D.Double[]>allVals = new ArrayList<>();
+        for (int i = 2; i < 5; i++) {
+//          Point2D.Double[] vals = lmbdaTestForLidstone("src/en_text.corp","src/en.test",i);
+//            Point2D.Double[] vals = lmbdaTestForLidstone("src/trainLs","src/testLs",i);
+            Point2D.Double[] vals = lmbdaTestForLidstone("src/ca_text.corp","src/ca.test",i);
+  //          allVals.add(vals);
+            System.out.println("n-gram: " + i);
+            GraphPanel.plot(vals);
+            for (int j = 0; j < vals.length; j++) {
+                System.out.println("lmbda: "+vals[j].getX()+"   ,Perplexity: "+vals[j].getY());
+            }
+        }
+
+    }
+/*
     public static void main(String[] args){
         long time = System.currentTimeMillis();
         double Perplexity = 0;
@@ -63,6 +81,7 @@ public class Test {
         double sec = ((double)time)/1000;
         System.out.println("Run time: "+sec+" sec");
     }
+    */
 
     private static String print_lambda(ArrayList<Double> best_lambda) {
         String str = "";
@@ -94,13 +113,18 @@ public class Test {
         for (int i = 0; i <= end; i++) {
             tLine = "";
             for (int j = 0; j < n_gram ; j++) {
-                tLine += tokes[i+j];
+                tLine += tokes[i+j] + " ";
             }
-            if(Table[n_gram-1].get(tLine).get(0) == null){
-                pr = Table[n_gram-1].get("<unseen>:").get(0);
+            if(Table[n_gram-1].get(tLine) == null){
+                if(n_gram > 1) {
+                    pr += Table[n_gram - 1].get("<unseen>:").get(0);
+                }
+                else{
+                    pr += Table[0].get("<UNK>").get(0);
+                }
             }
             else{
-                pr = Table[n_gram-1].get(tLine).get(0);
+                pr += Table[n_gram-1].get(tLine).get(0);
             }
         }
         return pr;
@@ -156,12 +180,15 @@ public class Test {
         ArrayList<Double> list;
         try {
             br = new BufferedReader(new FileReader(path));
-            while ((sCurrentLine = br.readLine()) != null) {
-                line = br.readLine();
+            br.readLine();
+            while ((line = br.readLine()) != null) {
+                //line = br.readLine();
                 if(line.length() > 0){
                     if(line.charAt(0) == '\\'){
                         count++;
-                    }
+                        if(count>=0){
+                            Table[count] = new HashMap<>();
+                        }                    }
                     else if(count >= 0) {
                         tokens = line.split(" ");
                         list = new ArrayList<>();
@@ -206,7 +233,7 @@ public class Test {
                         if(n_gram>0) {
                             arr.add(1, Double.parseDouble(tokens[tokens.length-1]));
                         }
-                        Table[n_gram].put(Parse.subTokens(tokens,1+n_gram,n_gram),arr);
+                        Table[n_gram].put(Parse.subTokens(tokens, 1 + n_gram, n_gram), arr);
                         arr = new ArrayList<>();
                     }
                 }
@@ -242,6 +269,43 @@ public class Test {
         return data;
     }
 
+    public static Point2D.Double[] lmbdaTestForLidstone(String lm_inPath,String test_inPath,int n_gram){
+
+        double start = 0;
+        double end = 1;
+        double jump = 0.1;
+        int size =(int)((end - start)/jump) + 1;
+        Point2D.Double[] lmbdaXY = new Point2D.Double[size];
+
+
+        ArrayList<String> corpus = Parse.readCorpus(lm_inPath);
+        String out = "src/lidstonLmbdaTest_";
+        String method = "ls";
+
+        HashMap<String,ArrayList<Integer>>[] TN_Table =  new HashMap[n_gram-1];
+        HashMap<String,Integer>[] nGramTable = Parse.createNGramTable(corpus, n_gram, method, TN_Table);
+        nGramTable = Parse.addUnknown(nGramTable);
+        Pr_Methods pr = null;
+        ArrayList<String> test_corpus = Parse.readCorpus(test_inPath);
+
+        double N = readNumberOfWords(test_corpus, n_gram);
+        double[] lmbda = new double[]{0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1};
+        for (int count =0; count < lmbda.length; count++) {
+            Table = new HashMap[n_gram];
+            double Perplexity = 0;
+            String outP = out+lmbda[count]+".txt";
+            pr = new Pr_Methods(nGramTable,method,lmbda[count],outP,TN_Table);
+            readLS(outP);
+            for (String line: test_corpus) {
+                Perplexity += evalLS(line, n_gram);
+            }
+            Perplexity = Math.pow(10,Perplexity/N);
+            Perplexity = 1/Perplexity;
+            lmbdaXY[count] = new Point2D.Double(lmbda[count],Perplexity);
+        }
+
+        return lmbdaXY;
+    }
 
 
 }

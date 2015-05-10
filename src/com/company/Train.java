@@ -13,12 +13,13 @@ public class Train {
 
     public static void main(String[] args) {
         long time = System.currentTimeMillis();
-        String path = "src/en_text.corp";
+      //  String path = "src/small_input_test.corp";
       //  String path = "src/very_small_input";
+        String path = "src/en_text.corp";
         ArrayList<String> corpus = Parse.readCorpus(path);
         String out = "src/out_test.txt";
         String method = "wb";
-        int n_gram = 5;
+        int n_gram = 4;
         double lmbda = 0.5;
         HashMap<String,ArrayList<Integer>>[] TN_Table =  new HashMap[n_gram-1];
         HashMap<String,Integer>[] nGramTable = Parse.createNGramTable(corpus, n_gram, method, TN_Table);

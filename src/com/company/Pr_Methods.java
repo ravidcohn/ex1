@@ -53,7 +53,7 @@ public class Pr_Methods {
 
 
 
-
+/*
     private void LidstonesLaw(HashMap<String,Integer>[] nGramTable, double lmbda){
         double[] N = countN(nGramTable);
         String str = "";
@@ -64,8 +64,10 @@ public class Pr_Methods {
         for (int i = 0; i < nGramTable.length; i++) {
             saveLine("\\" + (i + 1) + "-gram:\n");
             double lmbdaBN = lmbda * Math.pow(v,(i+1)) +N[i];
-            pr = lmbda / lmbdaBN + 0.000001;
-            saveLine(df.format(Math.log10(pr)) + " <unseen>:" + "\n");
+            pr = lmbda / lmbdaBN + 0.00000000000001;
+            if(i > 0) {
+                saveLine(df.format(Math.log10(pr)) + " <unseen>:" + "\n");
+            }
             for (String wi : nGramTable[i].keySet()) {
                 pr = (double) nGramTable[i].get(wi) + lmbda;
                 pr /= lmbdaBN ;
@@ -75,6 +77,47 @@ public class Pr_Methods {
             saveLine("\n");
         }
     }
+   */
+private void LidstonesLaw(HashMap<String,Integer>[] nGramTable, double lmbda){
+    double[] N = countN(nGramTable);
+    String str = "";
+    double n = 0;
+    double unseen = 0;
+    DecimalFormat df = new DecimalFormat("#.####");
+    df.setRoundingMode(RoundingMode.CEILING);
+    double v = nGramTable[0].keySet().size();
+    double pr = 0;
+    String startStr = "";
+    String[] tokens;
+    saveLine("\\" + (1) + "-gram:\n");
+    for (String wi : nGramTable[0].keySet()) {
+        pr = (double) nGramTable[0].get(wi);
+        pr /= v;
+        str = df.format(Math.log10(pr)) + " " + wi+"\n";
+        saveLine(str);
+    }
+    for (int i = 1; i < nGramTable.length; i++) {
+        double lmbdaBN = lmbda*v +N[i];
+        unseen = lmbda / lmbdaBN + 0.00000000000001;
+        saveLine("\\" + (i + 1) + "-gram:\n");
+        saveLine(df.format(Math.log10(unseen)) + " <unseen>:" + "\n");
+   //     saveLine(df.format(Math.log10(pr)) + " <unseen>:" + "\n");
+        for (String wi : nGramTable[i].keySet()) {
+            tokens = wi.split(" ");
+            startStr = Parse.subTokens(tokens, tokens.length - 2, i - 1);
+            n = nGramTable[i-1].get(startStr);
+            pr = (double) nGramTable[i].get(wi) + lmbda;
+            if (n+(v*lmbda)!=0) {
+                pr /= (n + (v * lmbda));
+            }else{
+                pr = unseen;
+            }
+            str = df.format(Math.log10(pr)) + " " + wi+"\n";
+            saveLine(str);
+        }
+        saveLine("\n");
+    }
+}
 
     private void WittenBell(HashMap<String,Integer>[] nGramTable,HashMap<String,ArrayList<Integer>>[] TN_Table){
         double[] N = countN(nGramTable);

@@ -139,12 +139,24 @@ public class Parse {
     }
     public static HashMap<String,Integer>[] addUnknown(HashMap<String, Integer>[] nGramTable) {
         int count = 0;
+        HashMap<String, Integer> temp = (HashMap<String, Integer>) nGramTable[0].clone();
         for (double n : nGramTable[0].values()){
             if(n==1){
                 count +=n;
             }
         }
         nGramTable[0].put("<UNK>", count);
+
+        /*
+        for (String str : nGramTable[0].keySet()){
+            if(nGramTable[0].get(str)==1){
+                temp.remove(str);
+                count +=1;
+            }
+        }
+        temp.put("<UNK>", count);
+        nGramTable[0] = temp;
+        */
         return nGramTable;
     }
 
