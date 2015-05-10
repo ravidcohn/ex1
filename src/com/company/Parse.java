@@ -7,28 +7,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
-public class Main {
-
-    public static void main(String[] args) {
-        long time = System.currentTimeMillis();
-        String path = "src/small_input_test.crop";
-        ArrayList<String> corpus = readCorpus(path);
-        String out = "src/out_test.txt";
-        String method = "lw";
-        int n_gram = 5;
-        HashMap<String,ArrayList<Integer>>[] TN_Table =  new HashMap[n_gram-1];
-        HashMap<String,Integer>[] nGramTable = createNGramTable(corpus,n_gram,method,TN_Table);
-        nGramTable = addUnknown(nGramTable);
-        Pr_Methods pr = new Pr_Methods(nGramTable,method,1,out,TN_Table);
-        time = System.currentTimeMillis() - time;
-        double sec = ((double)time)/1000;
-        System.out.println("Run time: "+sec+" sec");
-    }
-    /*
-    Input: text file.
-    Output: Separate the file into lines by DELIMS.
-    Wrap each line with START & END symbol.
-     */
+/**
+ * Created by Ravid on 05/05/2015.
+ */
+public class Parse {
     public static ArrayList<String> readCorpus(String fileName){
         ArrayList<String> lines = new ArrayList<>();
         StringTokenizer st;
@@ -126,7 +108,7 @@ public class Main {
                             arr.add(0);
                             TN_Table[n_gram-2].put(subStr, arr);
                         }
-                        TN_Table[n_gram-2].get(subStr).set(0, TN_Table[n_gram - 2].get(subStr).get(0)+1);
+                        TN_Table[n_gram-2].get(subStr).set(0, TN_Table[n_gram - 2].get(subStr).get(0) + 1);
                     }
                     wordCount.put(str, wordCount.get(str) + 1);
                     TN_Table[n_gram-2].get(subStr).set(1, TN_Table[n_gram - 2].get(subStr).get(1) + 1);
@@ -142,7 +124,7 @@ public class Main {
             ,String method,HashMap<String,ArrayList<Integer>>[] TN_Table){
         @SuppressWarnings("unchecked")
         HashMap<String,Integer>[] nGramTable = new HashMap[n_gram];
-        if(method.equals("wb")) {
+        if(method.equals("lw")) {
             for (int i = 0; i < n_gram; i++) {
                 nGramTable[i] = countAllWords(lines, i + 1);
             }
@@ -155,7 +137,7 @@ public class Main {
         }
         return nGramTable;
     }
-    private static HashMap<String,Integer>[] addUnknown(HashMap<String, Integer>[] nGramTable) {
+    public static HashMap<String,Integer>[] addUnknown(HashMap<String, Integer>[] nGramTable) {
         int count = 0;
         for (double n : nGramTable[0].values()){
             if(n==1){
@@ -166,5 +148,12 @@ public class Main {
         return nGramTable;
     }
 
+    public static String subTokens(String[] tokens, int start, int back){
+        String str = "";
+        for (int i=start-back;i<=start;i++){
+            str = str + tokens[i] + " ";
+        }
+        return str;
+    }
 
 }

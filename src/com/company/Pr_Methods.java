@@ -19,18 +19,29 @@ public class Pr_Methods {
                       double lmbda,String outPath,HashMap<String,ArrayList<Integer>>[] TN_Table){
         this.outPath = outPath;
         File file = new File(outPath);
+        int n_gram = nGramTable.length;
         try {
             if(file.exists()){
                 file.delete();
             }
             file.createNewFile();
-            fileWritter = new FileWriter(outPath, true);
+            fileWritter = new FileWriter(outPath, false);
             bufferWritter = new BufferedWriter(fileWritter);
 
             if(method.equals("wb")) {
+                saveLine("wb "+n_gram+"\n");
+                bufferWritter.close();
+                fileWritter.close();
+                fileWritter = new FileWriter(outPath, true);
+                bufferWritter = new BufferedWriter(fileWritter);
                 WittenBell(nGramTable,TN_Table);
             }
             else{
+                saveLine("ls "+n_gram+" "+lmbda+"\n");
+                bufferWritter.close();
+                fileWritter.close();
+                fileWritter = new FileWriter(outPath, true);
+                bufferWritter = new BufferedWriter(fileWritter);
                 LidstonesLaw(nGramTable,lmbda);
             }
             bufferWritter.close();
@@ -48,11 +59,15 @@ public class Pr_Methods {
         String str = "";
         DecimalFormat df = new DecimalFormat("#.####");
         df.setRoundingMode(RoundingMode.CEILING);
+        double v = nGramTable[0].keySet().size();
+        double pr = 0;
         for (int i = 0; i < nGramTable.length; i++) {
             saveLine("\\" + (i + 1) + "-gram:\n");
-            double lmbdaBN = lmbda * Math.pow(nGramTable[i].keySet().size(), (i + 1)) + N[i];
+            double lmbdaBN = lmbda * Math.pow(v,(i+1)) +N[i];
+            pr = lmbda / lmbdaBN + 0.000001;
+            saveLine(df.format(Math.log10(pr)) + " <unseen>:" + "\n");
             for (String wi : nGramTable[i].keySet()) {
-                double pr = (double) nGramTable[i].get(wi) + lmbda;
+                pr = (double) nGramTable[i].get(wi) + lmbda;
                 pr /= lmbdaBN ;
                 str = df.format(Math.log10(pr)) + " " + wi+"\n";
                 saveLine(str);
@@ -64,28 +79,28 @@ public class Pr_Methods {
     private void WittenBell(HashMap<String,Integer>[] nGramTable,HashMap<String,ArrayList<Integer>>[] TN_Table){
         double[] N = countN(nGramTable);
         String str = "";
+        String tokens[];
+        String subStr;
         DecimalFormat df = new DecimalFormat("#.####");
         df.setRoundingMode(RoundingMode.CEILING);
-        saveLine("\\1-gram:\n");
-        for (String wi : nGramTable[0].keySet()) {
-            double pr = (double) nGramTable[0].get(wi)/(N[0]);
-            str = df.format(Math.log10(pr)) + " " + wi+"\n";
-            saveLine(str);
-        }
-        saveLine("\n");
-
-
-        for (int i = 1; i < nGramTable.length; i++) {
+        double Z_i1 = 0;
+        double pr2 = 0;
+        for (int i = 0; i < nGramTable.length; i++) {
             saveLine("\\" + (i + 1) + "-gram:\n");
             for (String wi : nGramTable[i].keySet()) {
                 double pr = (double) nGramTable[i].get(wi);
-                int end = wi.length() - 2;
-                while(str.charAt(end)!=' '){
-                    end--;
+                if (i>0) {
+                    tokens = wi.split(" ");
+                    int end = (wi.length()-(tokens[tokens.length-1].length())-1);
+                    subStr = wi.substring(0, end);
+                    pr /= (TN_Table[i-1].get(subStr).get(0)+TN_Table[i-1].get(subStr).get(1));
+                    Z_i1 = N[i-1] - TN_Table[i-1].get(subStr).get(0);
+                    pr2 = TN_Table[i-1].get(subStr).get(0)/(Z_i1*(TN_Table[i-1].get(subStr).get(0)+TN_Table[i-1].get(subStr).get(1)));
+                    str = df.format(Math.log10(pr)) + " " + wi + " "+df.format(Math.log10(pr2)) + "\n";
+                }else{
+                    pr = pr/(N[i]);
+                    str = df.format(Math.log10(pr)) + " " + wi + "\n";
                 }
-                String subStr = str.substring(0,(end+1));
-                pr /=(double)(TN_Table[i-1].get(subStr).get(0)+TN_Table[i-1].get(subStr).get(1));
-                str = df.format(Math.log10(pr)) + " " + wi+"\n";
                 saveLine(str);
             }
             saveLine("\n");
