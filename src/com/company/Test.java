@@ -90,7 +90,7 @@ public class Test {
 
     public static double evalLS(String line,int n_gram){
         double pr = 0;
-        String[] tokes = line.split(" ");
+        String[] tokes = line.split(" ");//
         String tLine = "";
         int end = tokes.length-n_gram;
         for (int i = 0; i <= end; i++) {
