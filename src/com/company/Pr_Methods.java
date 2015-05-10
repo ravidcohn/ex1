@@ -97,7 +97,7 @@ private void LidstonesLaw(HashMap<String,Integer>[] nGramTable, double lmbda){
         saveLine(str);
     }
     for (int i = 1; i < nGramTable.length; i++) {
-        double lmbdaBN = lmbda*v +N[i];
+        double lmbdaBN = Math.pow(v,i+1)*lmbda +N[i];
         unseen = lmbda / lmbdaBN + 0.00000000000001;
         saveLine("\\" + (i + 1) + "-gram:\n");
         saveLine(df.format(Math.log10(unseen)) + " <unseen>:" + "\n");
@@ -107,11 +107,7 @@ private void LidstonesLaw(HashMap<String,Integer>[] nGramTable, double lmbda){
             startStr = Parse.subTokens(tokens, tokens.length - 2, i - 1);
             n = nGramTable[i-1].get(startStr);
             pr = (double) nGramTable[i].get(wi) + lmbda;
-            if (n+(v*lmbda)!=0) {
-                pr /= (n + (v * lmbda));
-            }else{
-                pr = unseen;
-            }
+            pr /= n + (v * lmbda);
             str = df.format(Math.log10(pr)) + " " + wi+"\n";
             saveLine(str);
         }

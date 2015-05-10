@@ -17,8 +17,8 @@ public class Test {
 //        ArrayList<Point2D.Double[]>allVals = new ArrayList<>();
         for (int i = 2; i < 5; i++) {
 //          Point2D.Double[] vals = lmbdaTestForLidstone("src/en_text.corp","src/en.test",i);
-//            Point2D.Double[] vals = lmbdaTestForLidstone("src/trainLs","src/testLs",i);
-            Point2D.Double[] vals = lmbdaTestForLidstone("src/ca_text.corp","src/ca.test",i);
+            Point2D.Double[] vals = lmbdaTestForLidstone("src/trainLs","src/testLs",i);
+//            Point2D.Double[] vals = lmbdaTestForLidstone("src/ca_text.corp","src/ca.test",i);
   //          allVals.add(vals);
             System.out.println("n-gram: " + i);
             GraphPanel.plot(vals);
