@@ -82,26 +82,31 @@ private void LidstonesLaw(HashMap<String,Integer>[] nGramTable, double lmbda){
     double[] N = countN(nGramTable);
     String str = "";
     double n = 0;
-    double unseen = 0;
     DecimalFormat df = new DecimalFormat("#.####");
     df.setRoundingMode(RoundingMode.CEILING);
     double v = nGramTable[0].keySet().size();
+    double unseen = 1.0 / v;
     double pr = 0;
     String startStr = "";
     String[] tokens;
     saveLine("\\" + (1) + "-gram:\n");
+
     for (String wi : nGramTable[0].keySet()) {
         pr = (double) nGramTable[0].get(wi);
         pr /= v;
-        str = df.format(Math.log10(pr)) + " " + wi+"\n";
+        str = df.format(Math.log10(pr)) + " " + wi+" 1.0"+"\n";
+        if(wi.equals("<UNK>")){
+            str = df.format(Math.log10(pr)) + " " + wi+" "+df.format(Math.log10(unseen))+"\n";
+        }
         saveLine(str);
     }
     saveLine("\n");
+    double pr2 = 0;
     for (int i = 1; i < nGramTable.length; i++) {
         double lmbdaBN = Math.pow(v,i+1)*lmbda +N[i];
-        unseen = lmbda / lmbdaBN + 0.000000000000000000000000001;
+        //unseen = lmbda / lmbdaBN + 0.000000000000000000000000001;
+
         saveLine("\\" + (i + 1) + "-gram:\n");
-        saveLine(df.format(Math.log10(unseen)) + " <unseen>:" + "\n");
    //     saveLine(df.format(Math.log10(pr)) + " <unseen>:" + "\n");
         for (String wi : nGramTable[i].keySet()) {
             tokens = wi.split(" ");
@@ -109,7 +114,8 @@ private void LidstonesLaw(HashMap<String,Integer>[] nGramTable, double lmbda){
             n = nGramTable[i-1].get(startStr);
             pr = (double) nGramTable[i].get(wi) + lmbda;
             pr /= n + (v * lmbda);
-            str = df.format(Math.log10(pr)) + " " + wi+"\n";
+            pr2 = lmbda/((double) nGramTable[i].get(wi) + v*lmbda);
+            str = df.format(Math.log10(pr)) + " " + wi+" "+df.format(Math.log10(pr2))+"\n";
             saveLine(str);
         }
         saveLine("\n");

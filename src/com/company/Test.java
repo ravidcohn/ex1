@@ -99,11 +99,12 @@ public class Test {
                 tLine += tokes[i+j] + " ";
             }
             if(Table[n_gram-1].get(tLine) == null){
-                if(n_gram > 1) {
-                    pr += Table[n_gram - 1].get("<unseen>:").get(0);
+                String sub = tLine.substring(0, tLine.length()-tokes[tokes.length-1].length());
+                if(Table[n_gram-1].get(sub) == null){
+                    pr += Table[0].get("<UNK> ").get(1);
                 }
                 else{
-                    pr += Table[0].get("<UNK>").get(0);
+                    pr += Table[n_gram - 1].get(sub).get(1);
                 }
             }
             else{
@@ -176,7 +177,9 @@ public class Test {
                         tokens = line.split(" ");
                         list = new ArrayList<>();
                         list.add(Double.parseDouble(tokens[0]));
-                        Table[count].put(line.substring(tokens[0].length()+1), list);
+                        list.add(Double.parseDouble(tokens[tokens.length-1]));
+                        Table[count].put(line.substring(
+                                tokens[0].length()+1,line.length()-tokens[tokens.length-1].length()), list);
                     }
                 }
             }
