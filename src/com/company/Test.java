@@ -11,7 +11,7 @@ import java.util.HashMap;
  * Created by Ravid on 04/05/2015.
  */
 public class Test {
-    public static HashMap<String,ArrayList<Double>>[] Table;
+
 
     public static void main(String[] args){
         long time = System.currentTimeMillis();
@@ -23,23 +23,23 @@ public class Test {
         data = readData(args[1]);
         method = data[0];
         n_gram = Integer.parseInt(data[1]);
-        Table = new HashMap[n_gram];
+        HashMap<String,ArrayList<Double>>[] Table = new HashMap[n_gram];
         ArrayList<Double>[] lambda;
         ArrayList<String> corpus = Parse.readCorpus(args[0]);
         N = readNumberOfWords(corpus, n_gram);
         lambda = computeLmabdaWB();
         if (method.equals("wb")){
-            readWB(args[1]);
+            readWB(Table,args[1]);
         }else if(method.equals("ls")){
-            readLS(args[1]);
+            readLS(Table,args[1]);
         }
         if (method.equals("wb")) {
             for (String line: corpus) {
-                Perplexity += evalWB(line, lambda[n_gram]);
+                Perplexity += evalWB(Table,line, lambda[n_gram]);
             }
         }else if(method.equals("ls")){
             for (String line: corpus) {
-                Perplexity += evalLS(line, n_gram);
+                Perplexity += evalLS(Table,line, n_gram);
             }
 
          }
@@ -51,7 +51,7 @@ public class Test {
         System.out.println("Run time: "+sec+" sec");
     }
 
-    private static ArrayList<Double>[] computeLmabdaWB() {
+    public static ArrayList<Double>[] computeLmabdaWB() {
         ArrayList<Double>[] lambda = new ArrayList[5];
         lambda[1].add(0, 0.5);
         lambda[1].add(1, 0.5);
@@ -89,7 +89,7 @@ public class Test {
         return N;
     }
 
-    public static double evalLS(String line,int n_gram){
+    public static double evalLS(HashMap<String,ArrayList<Double>>[] Table,String line,int n_gram){
         double pr = 0;
         String[] tokes = line.split(" ");
         String tLine = "";
@@ -116,7 +116,7 @@ public class Test {
         return pr;
     }
 
-    public static double evalWB(String line, ArrayList<Double> lambda){
+    public static double evalWB(HashMap<String,ArrayList<Double>>[] Table,String line, ArrayList<Double> lambda){
         //TODO write the function.
         int n_gram = lambda.size();
         String[] tokens;
@@ -155,7 +155,7 @@ public class Test {
 /*
     Read T-N gram table.
  */
-    public static void readLS(String path) {
+    public static void readLS(HashMap<String,ArrayList<Double>>[] Table,String path) {
         int count = -2;
         BufferedReader br = null;
         String sCurrentLine;
@@ -198,7 +198,7 @@ public class Test {
     /*
         read n gram table.
      */
-    public static void readWB(String path) {
+    public static void readWB(HashMap<String,ArrayList<Double>>[] Table,String path) {
         BufferedReader br = null;
         String sCurrentLine;
         String line;
