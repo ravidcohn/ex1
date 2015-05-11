@@ -138,17 +138,23 @@ private void LidstonesLaw(HashMap<String,Integer>[] nGramTable, double lmbda){
             saveLine("\\" + (i + 1) + "-gram:\n");
             for (String wi : nGramTable[i].keySet()) {
                 double pr = (double) nGramTable[i].get(wi);
-                if (i>0) {
-                    tokens = wi.split(" ");
-                    int end = (wi.length()-(tokens[tokens.length-1].length())-1);
-                    subStr = wi.substring(0, end);
-                    pr /= (TN_Table[i-1].get(subStr).get(0)+TN_Table[i-1].get(subStr).get(1));
-                    Z_i1 = N[i-1] - TN_Table[i-1].get(subStr).get(0);
-                    pr2 = TN_Table[i-1].get(subStr).get(0)/(Z_i1*(TN_Table[i-1].get(subStr).get(0)+TN_Table[i-1].get(subStr).get(1)));
+                if(i == 0){
+                    pr = pr/(N[i]);
+                    pr2 = TN_Table[i].get(wi).get(0)/(Z_i1*(TN_Table[i].get(wi).get(0)+TN_Table[i].get(wi).get(1)));
+                    str = df.format(Math.log10(pr)) + " " + wi + " "+df.format(Math.log10(pr2)) + "\n";
+                }
+                else if (i < nGramTable.length - 1) {
+                    //tokens = wi.split(" ");
+                    //int end = (wi.length()-(tokens[tokens.length-1].length())-1);
+                    //subStr = wi.substring(0, end);
+                    pr /= (TN_Table[i].get(wi).get(0)+TN_Table[i].get(wi).get(1));
+                    Z_i1 = N[i] - TN_Table[i].get(wi).get(0);
+
+                    pr2 = TN_Table[i].get(wi).get(0)/(Z_i1*(TN_Table[i].get(wi).get(0)+TN_Table[i].get(wi).get(1)));
                     str = df.format(Math.log10(pr)) + " " + wi + " "+df.format(Math.log10(pr2)) + "\n";
                 }else{
-                    pr = pr/(N[i]);
-                    str = df.format(Math.log10(pr)) + " " + wi + "\n";
+                    pr /= (TN_Table[i].get(wi).get(0)+TN_Table[i].get(wi).get(1));
+                    str = df.format(Math.log10(pr)) + " " + wi+ " 1" + "\n";
                 }
                 saveLine(str);
             }
