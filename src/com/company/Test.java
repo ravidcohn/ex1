@@ -52,7 +52,7 @@ public class Test {
         System.out.println("Run time: "+sec+" sec");
     }
 
-    private static ArrayList<Double>[] computeLmabdaWB() {
+    public static ArrayList<Double>[] computeLmabdaWB() {
         ArrayList<Double>[] lambda = new ArrayList[5];
         lambda[1].add(0, 0.5);
         lambda[1].add(1, 0.5);

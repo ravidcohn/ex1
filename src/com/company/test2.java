@@ -85,7 +85,7 @@ public static void testWB() {
         ArrayList<String> corpus = Parse.readCorpus(lm_inPath);
         String out = "src/lidstonLmbdaTest_";
         String method = "ls";
-
+        HashMap<String,ArrayList<Double>>[] Table = new HashMap[n_gram];
         HashMap<String,ArrayList<Integer>>[] TN_Table =  new HashMap[n_gram-1];
         HashMap<String,Integer>[] nGramTable = Parse.createNGramTable(corpus, n_gram, method, TN_Table);
         nGramTable = Parse.addUnknown(nGramTable);
@@ -95,13 +95,13 @@ public static void testWB() {
         double N = Test.readNumberOfWords(test_corpus, n_gram);
         double[] lmbda = new double[]{0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1};
         for (int count =0; count < lmbda.length; count++) {
-            Test.Table = new HashMap[n_gram];
+            Table = new HashMap[n_gram];
             double Perplexity = 0;
             String outP = out+lmbda[count]+".txt";
             pr = new Pr_Methods(nGramTable,method,lmbda[count],outP,TN_Table);
-            Test.readLS(outP);
+            Test.readLS(Table,outP);
             for (String line: test_corpus) {
-                Perplexity += Test.evalLS(line, n_gram);
+                Perplexity += Test.evalLS(Table,line, n_gram);
             }
             Perplexity = Math.pow(10,Perplexity/N);
             Perplexity = 1/Perplexity;
