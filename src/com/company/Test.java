@@ -16,7 +16,6 @@ public class Test {
     public static void main(String[] args){
         long time = System.currentTimeMillis();
         double Perplexity = 0;
-        double Best_Perplexity = Double.POSITIVE_INFINITY;
         double N;
         int n_gram;
         String method;
@@ -75,13 +74,6 @@ public class Test {
         return lambda;
     }
 
-    public static String print_lambda(ArrayList<Double> best_lambda) {
-        String str = "";
-        for (double lamda:best_lambda){
-            str  += lamda+ " ";
-        }
-        return str;
-    }
 
     public static ArrayList<ArrayList<Double>> interpolation(int n_gram) {
         return new ArrayList<>();

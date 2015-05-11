@@ -35,22 +35,32 @@ public class test2 {
     }
 
 public static void testWB() {
-    ArrayList<Double>[] best_lambda = new ArrayList<>[4];
-    ArrayList<ArrayList<Double>> lambda;
-    double Perplexity = 0;
-    double N = Test.readNumberOfWords(corpus, n_gram);
+    ArrayList<Double>[] best_lambda = new ArrayList[4];
     for (int i = 2; i < 5; i++) {
-//          Point2D.Double[] vals = lmbdaTestForWB("src/en_text.corp","src/en.test",i);
-        //   Point2D.Double[] vals = lmbdaTestForWB("src/trainLs","src/testLs",i);
-        Point2D.Double[] vals = lmbdaTestForWB("src/ca_text.corp", "src/ca.test", i);
-//            Point2D.Double[] vals = lmbdaTestForWB("src/es_text.corp","src/es.test",i);
-        //          allVals.add(vals);
+//           best_lambda[i] vals = lmbdaTestForWB("src/en_text.corp","src/en.test",i);
+        //    best_lambda[i] vals = lmbdaTestForWB("src/trainLs","src/testLs",i);
+        best_lambda[i] = lmbdaTestForWB("src/ca_text.corp", "src/ca.test", i);
+//             best_lambda[i] vals = lmbdaTestForWB("src/es_text.corp","src/es.test",i);
         System.out.println("n-gram: " + i);
-        GraphPanel.plot(vals);
-        for (int j = 0; j < vals.length; j++) {
-            System.out.println("lmbda: " + vals[j].getX() + "   ,Perplexity: " + vals[j].getY());
-        }
-        lambda = Combination.CreateLmbdaList(i);
+    }
+}
+    private static  ArrayList<Double> lmbdaTestForWB(String lm_inPath,String test_inPath,int n_gram) {
+        ArrayList<String> corpus = Parse.readCorpus(lm_inPath);
+        String out = "src/WBLmbdaTest_";
+        String method = "wb";
+        ArrayList<Double> best_lambda = new ArrayList<>();
+
+        HashMap<String,ArrayList<Integer>>[] TN_Table =  new HashMap[n_gram];
+        HashMap<String,Integer>[] nGramTable = Parse.createNGramTable(corpus, n_gram, method, TN_Table);
+        nGramTable = Parse.addUnknown(nGramTable);
+        Pr_Methods pr = new Pr_Methods(nGramTable,method,0.5,out,TN_Table);
+
+        ArrayList<String> test_corpus = Parse.readCorpus(test_inPath);
+
+        double Perplexity = 0;
+        double Best_Perplexity = Double.POSITIVE_INFINITY;
+        double N = Test.readNumberOfWords(corpus, n_gram);
+        ArrayList<ArrayList<Double>> lambda = Combination.CreateLmbdaList(n_gram);
         for (ArrayList<Double> temp_lambda : lambda) {
             for (String line : corpus) {
                 Perplexity += Test.evalWB(line, temp_lambda);
@@ -67,10 +77,8 @@ public static void testWB() {
         System.out.println("Best_Perplexity: " + Best_Perplexity);
         System.out.println("best_lambda: " + print_lambda(best_lambda));
         System.out.println("Perplexity: " + Perplexity);
-    }
-}
-    private static Point2D.Double[] lmbdaTestForWB(String s, String s1, int i) {
-        return new Point2D.Double[0];
+
+        return best_lambda;
     }
 
     public static Point2D.Double[] lmbdaTestForLidstone(String lm_inPath,String test_inPath,int n_gram){
@@ -80,7 +88,6 @@ public static void testWB() {
         double jump = 0.1;
         int size =(int)((end - start)/jump) + 1;
         Point2D.Double[] lmbdaXY = new Point2D.Double[size];
-
 
         ArrayList<String> corpus = Parse.readCorpus(lm_inPath);
         String out = "src/lidstonLmbdaTest_";
@@ -109,6 +116,14 @@ public static void testWB() {
         }
 
         return lmbdaXY;
+    }
+
+    public static String print_lambda(ArrayList<Double> best_lambda) {
+        String str = "";
+        for (double lamda:best_lambda){
+            str  += lamda+ " ";
+        }
+        return str;
     }
 
 
