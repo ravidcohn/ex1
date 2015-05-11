@@ -35,10 +35,10 @@ public class test2 {
     }
 
 public static void testWB() {
-    ArrayList<Double>[] best_lambda = new ArrayList<>[4];
+    ArrayList<Double>[] best_lambda = new ArrayList[4];
     ArrayList<ArrayList<Double>> lambda;
     double Perplexity = 0;
-    double N = Test.readNumberOfWords(corpus, n_gram);
+    /*double N = Test.readNumberOfWords(corpus, n_gram);
     for (int i = 2; i < 5; i++) {
 //          Point2D.Double[] vals = lmbdaTestForWB("src/en_text.corp","src/en.test",i);
         //   Point2D.Double[] vals = lmbdaTestForWB("src/trainLs","src/testLs",i);
@@ -67,7 +67,7 @@ public static void testWB() {
         System.out.println("Best_Perplexity: " + Best_Perplexity);
         System.out.println("best_lambda: " + print_lambda(best_lambda));
         System.out.println("Perplexity: " + Perplexity);
-    }
+    }*/
 }
     private static Point2D.Double[] lmbdaTestForWB(String s, String s1, int i) {
         return new Point2D.Double[0];

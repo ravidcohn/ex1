@@ -31,7 +31,7 @@ public class lm {
         }
         if(n_gram < 1 || n_gram > 5 || inPath.length() == 0
                 || outPath.length() == 0|| model.length() == 0 ||(!model.equals("wb")&&!model.equals("ls")) ||lmbda < 0|| lmbda > 1){
-            System.out.println("The program can only run in the following way:");
+            System.out.println("This program can only run in the following way:");
             System.out.println("lm -n <1-5 gram> -i <input corpus file> -o <output model file>  <options>");
             System.out.println("<options> =  [-s <wb,ls> , -lmbd <lmbda>]");
             System.out.println("0 <= lmbda <= 1");

@@ -7,7 +7,7 @@ public class eval {
 
     public static void main(String[] args) {
         if(args.length != 4){
-            System.out.println("The program can only run in the following way:");
+            System.out.println("This program can only run in the following way:");
             System.out.println("eval -i <input file> -m <model file>");
         }
         else{
