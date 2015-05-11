@@ -55,16 +55,16 @@ public class test2 {
         Pr_Methods pr = null;
         ArrayList<String> test_corpus = Parse.readCorpus(test_inPath);
 
-        double N = Test.readNumberOfWords(test_corpus, n_gram);
+        double N = eval.readNumberOfWords(test_corpus, n_gram);
         double[] lmbda = new double[]{0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1};
         for (int count =0; count < lmbda.length; count++) {
             Table = new HashMap[n_gram];
             double Perplexity = 0;
             String outP = out+lmbda[count]+".txt";
             pr = new Pr_Methods(nGramTable,method,lmbda[count],outP,TN_Table);
-            Test.readLS(Table,outP);
+            eval.readLS(Table,outP);
             for (String line: test_corpus) {
-                Perplexity += Test.evalLS(Table,line, n_gram);
+                Perplexity += eval.evalLS(Table,line, n_gram);
             }
             Perplexity = Math.pow(10,Perplexity/N);
             Perplexity = 1/Perplexity;
@@ -98,15 +98,15 @@ public class test2 {
         nGramTable = Parse.addUnknown(nGramTable);
         Pr_Methods pr = new Pr_Methods(nGramTable,method,0.5,out,TN_Table);
         ArrayList<String> test_corpus = Parse.readCorpus(test_inPath);
-        Test.readWB(Table, out);
+        eval.readWB(Table, out);
 
         double Perplexity = 0;
         double Best_Perplexity = Double.POSITIVE_INFINITY;
-        double N = Test.readNumberOfWords(corpus, n_gram);
+        double N = eval.readNumberOfWords(corpus, n_gram);
         ArrayList<ArrayList<Double>> lambda = Combination.CreateLmbdaList(n_gram);
         for (ArrayList<Double> temp_lambda : lambda) {
             for (String line : corpus) {
-                Perplexity += Test.evalWB(Table, line, temp_lambda);
+                Perplexity += eval.evalWB(Table, line, temp_lambda);
             }
             Perplexity = Math.pow(10, Perplexity / N);
             Perplexity = 1 / Perplexity;
