@@ -3,36 +3,35 @@ package com.company;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+//import java.util.List;
 
 /**
  * Created by Ravid on 09/05/2015.
  */
 public class test2 {
 
-    public static void main(String[] args){
-        String method = "";//wb\ls
+    public static void main(String[] args){/*
 //        ArrayList<Point2D.Double[]>allVals = new ArrayList<>();
         for (int i = 2; i < 5; i++) {
-            if(method.equals("ls")) {
 //          Point2D.Double[] vals = lmbdaTestForLidstone("src/en_text.corp","src/en.test",i);
-//            Point2D.Double[] vals = lmbdaTestForLidstone("src/trainLs","src/testLs",i);
+        //   Point2D.Double[] vals = lmbdaTestForLidstone("src/trainLs","src/testLs",i);
 //            Point2D.Double[] vals = lmbdaTestForLidstone("src/ca_text.corp","src/ca.test",i);
-                Point2D.Double[] vals = lmbdaTestForLidstone("src/es_text.corp", "src/es.test", i);
-            }
+            Point2D.Double[] vals = lmbdaTestForLidstone("src/es_text.corp","src/es.test",i);
             //          allVals.add(vals);
             System.out.println("n-gram: " + i);
-
             GraphPanel.plot(vals);
             for (int j = 0; j < vals.length; j++) {
                 System.out.println("lmbda: "+vals[j].getX()+"   ,Perplexity: "+vals[j].getY());
             }
+        }*/
+        System.out.println("This is linux test!");
+        for (int i = 0; i < args.length; i++) {
+            System.out.println(args[i]);
         }
-
     }
     public static Point2D.Double[] lmbdaTestForLidstone(String lm_inPath,String test_inPath,int n_gram){
 
-        double start = 0;
+        double start = 0.1;
         double end = 1;
         double jump = 0.1;
         int size =(int)((end - start)/jump) + 1;
@@ -50,7 +49,7 @@ public class test2 {
         ArrayList<String> test_corpus = Parse.readCorpus(test_inPath);
 
         double N = Test.readNumberOfWords(test_corpus, n_gram);
-        double[] lmbda = new double[]{0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1};
+        double[] lmbda = new double[]{0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1};
         for (int count =0; count < lmbda.length; count++) {
             Test.Table = new HashMap[n_gram];
             double Perplexity = 0;
