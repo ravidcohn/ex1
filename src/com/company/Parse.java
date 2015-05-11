@@ -124,12 +124,12 @@ public class Parse {
             ,String method,HashMap<String,ArrayList<Integer>>[] TN_Table){
         @SuppressWarnings("unchecked")
         HashMap<String,Integer>[] nGramTable = new HashMap[n_gram];
-        if(method.equals("lw")) {
+        if(method.equals("ls")) {
             for (int i = 0; i < n_gram; i++) {
                 nGramTable[i] = countAllWords(lines, i + 1);
             }
         }
-        else{
+        else if(method.equals("wb")){
             nGramTable[0] = countAllWords(lines, 1);
             for (int i = 1; i < n_gram; i++) {
                 nGramTable[i] = countAllWords2(lines, i + 1,TN_Table);
