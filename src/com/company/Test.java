@@ -99,12 +99,12 @@ public class Test {
                 tLine += tokes[i+j] + " ";
             }
             if(Table[n_gram-1].get(tLine) == null){
-                String sub = tLine.substring(0, tLine.length()-tokes[tokes.length-1].length());
-                if(Table[n_gram-1].get(sub) == null){
+                String sub = tLine.substring(0, tLine.length()-tokes[i+n_gram-1].length()-1);
+                if(Table[n_gram-2].get(sub) == null){
                     pr += Table[0].get("<UNK> ").get(1);
                 }
                 else{
-                    pr += Table[n_gram - 1].get(sub).get(1);
+                    pr += Table[n_gram - 2].get(sub).get(1);
                 }
             }
             else{

@@ -3,18 +3,18 @@ package com.company;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+//import java.util.List;
 
 /**
  * Created by Ravid on 09/05/2015.
  */
 public class test2 {
 
-    public static void main(String[] args){
+    public static void main(String[] args){/*
 //        ArrayList<Point2D.Double[]>allVals = new ArrayList<>();
         for (int i = 2; i < 5; i++) {
 //          Point2D.Double[] vals = lmbdaTestForLidstone("src/en_text.corp","src/en.test",i);
-//            Point2D.Double[] vals = lmbdaTestForLidstone("src/trainLs","src/testLs",i);
+        //   Point2D.Double[] vals = lmbdaTestForLidstone("src/trainLs","src/testLs",i);
 //            Point2D.Double[] vals = lmbdaTestForLidstone("src/ca_text.corp","src/ca.test",i);
             Point2D.Double[] vals = lmbdaTestForLidstone("src/es_text.corp","src/es.test",i);
             //          allVals.add(vals);
@@ -23,8 +23,11 @@ public class test2 {
             for (int j = 0; j < vals.length; j++) {
                 System.out.println("lmbda: "+vals[j].getX()+"   ,Perplexity: "+vals[j].getY());
             }
+        }*/
+        System.out.println("This is linux test!");
+        for (int i = 0; i < args.length; i++) {
+            System.out.println(args[i]);
         }
-
     }
     public static Point2D.Double[] lmbdaTestForLidstone(String lm_inPath,String test_inPath,int n_gram){
 
