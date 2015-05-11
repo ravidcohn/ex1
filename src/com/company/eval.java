@@ -137,7 +137,7 @@ public class eval {
             for(int j=0;j<n_gram;j++) {
                 if (Table[j].get(subStr[j][0]) != null) {
                     PP += lambda.get(j) * Math.pow(10,Table[j].get(subStr[j][0]).get(0));
-                } else if(j==0) {
+                }else if(j==0) {
                     PP += lambda.get(j) * Math.pow(10,Table[j].get("<UNK> ").get(0));
                 }else  if(Table[j-1].get(subStr[j][1]) != null) {
                     PP += lambda.get(j) * Math.pow(10, Table[j-1].get(subStr[j][1]).get(1));
