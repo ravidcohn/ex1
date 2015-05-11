@@ -218,7 +218,7 @@ public class Test {
                         }
                     }else if(n_gram>=0){
                         arr.add(0, Double.parseDouble(tokens[0]));
-                        if(n_gram>0) {
+                        if(tokens.length==2) {
                             arr.add(1, Double.parseDouble(tokens[tokens.length-1]));
                         }
                         Table[n_gram].put(Parse.subTokens(tokens, 1 + n_gram, n_gram), arr);

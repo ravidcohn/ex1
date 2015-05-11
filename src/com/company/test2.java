@@ -119,7 +119,6 @@ public class test2 {
 
         System.out.println("Best_Perplexity: " + Best_Perplexity);
         System.out.println("best_lambda: " + print_lambda(best_lambda));
-        System.out.println("Perplexity: " + Perplexity);
 
         return best_lambda;
     }
