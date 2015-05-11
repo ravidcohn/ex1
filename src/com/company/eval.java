@@ -139,10 +139,6 @@ public class eval {
                     PP += lambda.get(j) * Math.pow(10,Table[j].get(subStr[j][0]).get(0));
                 } else if(j==0) {
                     PP += lambda.get(j) * Math.pow(10,Table[j].get("<UNK> ").get(0));
-                }else if(j==1 && Table[j-1].get(subStr[j][1]) != null){
-                    PP += lambda.get(j) * Math.pow(10, Table[j-1].get(subStr[j][1]).get(0));
-                }else if(j==1){
-                    PP += lambda.get(j) * Math.pow(10,Table[j-1].get("<UNK> ").get(0));
                 }else  if(Table[j-1].get(subStr[j][1]) != null) {
                     PP += lambda.get(j) * Math.pow(10, Table[j-1].get(subStr[j][1]).get(1));
                 }
@@ -222,9 +218,7 @@ public class eval {
                         }
                     }else if(n_gram>=0){
                         arr.add(0, Double.parseDouble(tokens[0]));
-                        if(n_gram>0) {
-                            arr.add(1, Double.parseDouble(tokens[tokens.length-1]));
-                        }
+                        arr.add(1, Double.parseDouble(tokens[tokens.length-1]));
                         Table[n_gram].put(Parse.subTokens(tokens, 1 + n_gram, n_gram), arr);
                         arr = new ArrayList<>();
                     }

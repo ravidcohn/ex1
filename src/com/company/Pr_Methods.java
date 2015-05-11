@@ -154,7 +154,7 @@ private void LidstonesLaw(HashMap<String,Integer>[] nGramTable, double lmbda){
                     str = df.format(Math.log10(pr)) + " " + wi + " "+df.format(Math.log10(pr2)) + "\n";
                 }else{
                     pr /= (TN_Table[i].get(wi).get(0)+TN_Table[i].get(wi).get(1));
-                    str = df.format(Math.log10(pr)) + " " + wi + "\n";
+                    str = df.format(Math.log10(pr)) + " " + wi+ " 1" + "\n";
                 }
                 saveLine(str);
             }
