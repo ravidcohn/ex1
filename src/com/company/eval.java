@@ -235,7 +235,7 @@ public class eval {
         }
     }
 
-    private static String[] readData(String path) {
+    public static String[] readData(String path) {
         String[] data = null;
         BufferedReader br = null;
         String line;
