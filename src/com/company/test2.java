@@ -20,7 +20,7 @@ public class test2 {
             testWB();
         }else if(method.equals("mixed")){
             mixed();
-        }
+        }//
     }
 
     private static void mixed() {
