@@ -126,6 +126,7 @@ public class eval {
         String[] tokens;
         String[][] subStr = new String[n_gram][2];
         double PP = 0;
+        double PP_temp = 0;
         tokens = line.split(" ");
         for (int i=n_gram;i<=tokens.length;i++){
             for(int j=0;j<n_gram;j++){
@@ -136,20 +137,23 @@ public class eval {
             }
             for(int j=0;j<n_gram;j++) {
                 if (Table[j].get(subStr[j][0]) != null) {
-                    PP += lambda.get(j) * Math.pow(10,Table[j].get(subStr[j][0]).get(0));
+                    PP_temp += lambda.get(j) * Math.pow(10,Table[j].get(subStr[j][0]).get(0));
                 }else if(j==0) {
-                    PP += lambda.get(j) * Math.pow(10,Table[j].get("<UNK> ").get(0));
+                    PP_temp += lambda.get(j) * Math.pow(10,Table[j].get("<UNK> ").get(0));
                 }else  if(Table[j-1].get(subStr[j][1]) != null) {
-                    PP += lambda.get(j) * Math.pow(10, Table[j-1].get(subStr[j][1]).get(1));
+                    PP_temp += lambda.get(j) * Math.pow(10, Table[j-1].get(subStr[j][1]).get(1));
                 }
             }
+            PP_temp = Math.log10(PP_temp);
+            PP += PP_temp;
+            PP_temp = 0;
 
         }
 
         if (PP==0) {
             return 0;
         }else {
-            return Math.log10(PP);
+            return PP;
         }
     }
     /*
