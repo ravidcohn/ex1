@@ -78,10 +78,10 @@ public class test2 {
         ArrayList<Double>[] best_lambda = new ArrayList[4];
         for (int i = 2; i < 5; i++) {
             System.out.println("n-gram: " + i);
-//           best_lambda[i]  = lmbdaTestForWB("src/en_text.corp","src/en.test",i);
+//           best_lambda[i-1]  = lmbdaTestForWB("src/en_text.corp","src/en.test",i);
                 best_lambda[i-1]  = lmbdaTestForWB("src/trainLs","src/testLs",i);
-//            best_lambda[i] = lmbdaTestForWB("src/ca_text.corp", "src/ca.test", i);
-//             best_lambda[i]  = lmbdaTestForWB("src/es_text.corp","src/es.test",i);
+//            best_lambda[i-1] = lmbdaTestForWB("src/ca_text.corp", "src/ca.test", i);
+//             best_lambda[i-1]  = lmbdaTestForWB("src/es_text.corp","src/es.test",i);
 
         }
     }
