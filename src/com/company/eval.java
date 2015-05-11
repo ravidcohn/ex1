@@ -83,7 +83,7 @@ public class eval {
         return new ArrayList<>();
     }
 
-    private static double readNumberOfWords(ArrayList<String> corpus,int n_gram) {
+    public static double readNumberOfWords(ArrayList<String> corpus,int n_gram) {
         double N = 0;
         String[] tokens;
         for (String line: corpus){
@@ -93,7 +93,7 @@ public class eval {
         return N;
     }
 
-    private static double evalLS(HashMap<String,ArrayList<Double>>[] Table,String line,int n_gram){
+    public static double evalLS(HashMap<String,ArrayList<Double>>[] Table,String line,int n_gram){
         double pr = 0;
         String[] tokes = line.split(" ");
         String tLine = "";
@@ -120,7 +120,7 @@ public class eval {
         return pr;
     }
 
-    private static double evalWB(HashMap<String,ArrayList<Double>>[] Table,String line, ArrayList<Double> lambda){
+    public static double evalWB(HashMap<String,ArrayList<Double>>[] Table,String line, ArrayList<Double> lambda){
         //TODO write the function.
         int n_gram = lambda.size();
         String[] tokens;
@@ -155,7 +155,7 @@ public class eval {
     /*
         Read T-N gram table.
      */
-    private static void readLS(HashMap<String,ArrayList<Double>>[] Table,String path) {
+    public static void readLS(HashMap<String,ArrayList<Double>>[] Table,String path) {
         int count = -2;
         BufferedReader br = null;
         String sCurrentLine;
@@ -198,7 +198,7 @@ public class eval {
     /*
         read n gram table.
      */
-    private static void readWB(HashMap<String,ArrayList<Double>>[] Table,String path) {
+    public static void readWB(HashMap<String,ArrayList<Double>>[] Table,String path) {
         BufferedReader br = null;
         String sCurrentLine;
         String line;
