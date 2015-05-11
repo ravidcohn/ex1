@@ -53,6 +53,11 @@ public class eval {
 
     public static ArrayList<Double>[] computeLmabdaWB() {
         ArrayList<Double>[] lambda = new ArrayList[5];
+        for (int i = 0; i < lambda.length; i++) {
+            lambda[i] = new ArrayList<>();
+        }
+
+
         lambda[1].add(0, 0.5);
         lambda[1].add(1, 0.5);
 
