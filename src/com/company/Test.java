@@ -25,45 +25,54 @@ public class Test {
         method = data[0];
         n_gram = Integer.parseInt(data[1]);
         Table = new HashMap[n_gram];
-        ArrayList<Double> best_lambda = new ArrayList<>();
-        ArrayList<ArrayList<Double>> lambda = new ArrayList<>();
+        ArrayList<Double>[] lambda;
         ArrayList<String> corpus = Parse.readCorpus(args[0]);
         N = readNumberOfWords(corpus, n_gram);
+        lambda = computeLmabdaWB();
         if (method.equals("wb")){
             readWB(args[1]);
         }else if(method.equals("ls")){
             readLS(args[1]);
         }
-        lambda = Combination.CreateLmbdaList(n_gram);
         if (method.equals("wb")) {
-            for (ArrayList<Double> temp_lambda:lambda) {
-                for (String line: corpus) {
-                    Perplexity += evalWB(line, temp_lambda);
-                }
-                Perplexity = Math.pow(10,Perplexity/N);
-                Perplexity = 1/Perplexity;
-                if (Perplexity<Best_Perplexity){
-                    Best_Perplexity = Perplexity;
-                    best_lambda = temp_lambda;
-                }
-                Perplexity = 0;
+            for (String line: corpus) {
+                Perplexity += evalWB(line, lambda[n_gram]);
             }
-            }else if(method.equals("ls")){
-                for (String line: corpus) {
-                    Perplexity += evalLS(line, n_gram);
-                 }
-            Perplexity = Math.pow(10,Perplexity/N);
-            Perplexity = 1/Perplexity;
-            System.out.println(Perplexity);
-         }
+        }else if(method.equals("ls")){
+            for (String line: corpus) {
+                Perplexity += evalLS(line, n_gram);
+            }
 
-        Perplexity = 1/Math.pow(Perplexity, -N);
-        System.out.println("Best_Perplexity: " + Best_Perplexity);
-        System.out.println("best_lambda: " + print_lambda(best_lambda));
+         }
+        Perplexity = Math.pow(10,Perplexity/N);
+        Perplexity = 1/Perplexity;
         System.out.println("Perplexity: " + Perplexity);
         time = System.currentTimeMillis() - time;
         double sec = ((double)time)/1000;
         System.out.println("Run time: "+sec+" sec");
+    }
+
+    private static ArrayList<Double>[] computeLmabdaWB() {
+        ArrayList<Double>[] lambda = new ArrayList[5];
+        lambda[1].add(0, 0.5);
+        lambda[1].add(1, 0.5);
+
+        lambda[2].add(0, 0.5);
+        lambda[2].add(1, 0.5);
+        lambda[2].add(2, 0.5);
+
+        lambda[3].add(0, 0.5);
+        lambda[3].add(1, 0.5);
+        lambda[3].add(2, 0.5);
+        lambda[3].add(3, 0.5);
+
+        lambda[4].add(0, 0.5);
+        lambda[4].add(1, 0.5);
+        lambda[4].add(2, 0.5);
+        lambda[4].add(3, 0.5);
+        lambda[4].add(4, 0.5);
+
+        return lambda;
     }
 
     public static String print_lambda(ArrayList<Double> best_lambda) {
@@ -90,7 +99,7 @@ public class Test {
 
     public static double evalLS(String line,int n_gram){
         double pr = 0;
-        String[] tokes = line.split(" ");//
+        String[] tokes = line.split(" ");
         String tLine = "";
         int end = tokes.length-n_gram;
         for (int i = 0; i <= end; i++) {
