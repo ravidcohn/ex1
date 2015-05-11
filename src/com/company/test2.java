@@ -13,7 +13,7 @@ public class test2 {
 
     public static void main(String[] args){
 //        ArrayList<Point2D.Double[]>allVals = new ArrayList<>();
-        String method = "wb";//wb\ls.
+        String method = "mixed";//wb\ls.
         if (method.equals("ls")) {
             testLS();
         }else if (method.equals("wb")){
@@ -24,59 +24,114 @@ public class test2 {
     }
 
     private static void mixed() {
-        String[]args_Lm_En = new String[4];
-        String[]args_Lm_Es = new String[4];
-        String[]args_Lm_Ca = new String[4];
+        String[]args_Lm_En = new String[6];
+        String[]args_Lm_Es = new String[6];
+        String[]args_Lm_Ca = new String[6];
 
         ArrayList<String> mixed_corpus = new ArrayList<>();
         ArrayList<String> mixed_key = new ArrayList<>();
-        Integer[] key_val = new Integer[600];
-        Integer[] prediced = new Integer[600];
 
         Double Perplexity_en, Perplexity_es, Perplexity_ca;
-        int n_gram_en = 0; int n_gram_es = 0; int n_gram_ca = 0;
+        int n_gram_en = 4; int n_gram_es = 4; int n_gram_ca = 4;
 
         HashMap<String,ArrayList<Double>>[] Table_en = new HashMap[n_gram_en];
         HashMap<String,ArrayList<Double>>[] Table_es = new HashMap[n_gram_es];
         HashMap<String,ArrayList<Double>>[] Table_ca = new HashMap[n_gram_ca];
 
+
+
         int sum = 0;
         double suc = 0;
+        double en_lmbda = 0.01;
+        String en_method = "wb";
+        double es_lmbda = 0.01;
+        String es_method = "wb";
+        double ca_lmbda = 0.01;
+        String ca_method = "wb";
 
-        args_Lm_En[0] = "-n";
-        args_Lm_En[1] = ""+n_gram_en;
-        args_Lm_En[2] = "-i";
-        args_Lm_En[3] = "src/en_text.corp";
-        args_Lm_En[4] = "-o";
-        args_Lm_En[5] = "src/en.model";
+        args_Lm_En[0] = ""+n_gram_en;
+        args_Lm_En[1] = "src/en_text.corp";
+        args_Lm_En[2] = "src/en.model";
+        args_Lm_En[3] = ca_method;
+        args_Lm_En[4] = ""+ca_lmbda;
 
-        args_Lm_Es[0] = "-n";
-        args_Lm_Es[1] = ""+n_gram_es;
-        args_Lm_Es[2] = "-i";
-        args_Lm_Es[3] = "src/es_text.corp";
-        args_Lm_Es[4] = "-o";
-        args_Lm_Es[5] = "src/es.model";
 
-        args_Lm_Ca[0] = "-n";
-        args_Lm_Ca[1] = ""+n_gram_ca;
-        args_Lm_Ca[2] = "-i";
-        args_Lm_Ca[3] = "src/ca_text.corp";
-        args_Lm_Ca[4] = "-o";
-        args_Lm_Ca[5] = "src/ca.model";
+        args_Lm_Es[0] = ""+n_gram_es;
+        args_Lm_Es[1] = "src/es_text.corp";
+        args_Lm_Es[2] = "src/es.model";
+        args_Lm_Es[3] = ca_method;
+        args_Lm_Es[4] = ""+ca_lmbda;
 
-        mixed_corpus = Parse.readCorpus("src/mixed.test");
-        mixed_key = Parse.readCorpus("mixed.key");
+        args_Lm_Ca[0] = ""+n_gram_ca;
+        args_Lm_Ca[1] = "src/ca_text.corp";
+        args_Lm_Ca[2] = "src/ca.model";
+        args_Lm_Ca[3] = ca_method;
+        args_Lm_Ca[4] = ""+ca_lmbda;
+
+
+
+
+
+        ArrayList<String> en_corpus = Parse.readCorpus(args_Lm_En[1]);
+        HashMap<String,ArrayList<Integer>>[] en_TN_Table =  new HashMap[n_gram_en-1];
+        HashMap<String,Integer>[] en_nGramTable = Parse.createNGramTable(en_corpus, n_gram_en, en_method, en_TN_Table);
+        en_nGramTable = Parse.addUnknown(en_nGramTable);
+        Pr_Methods en_pr = new Pr_Methods(en_nGramTable,en_method,en_lmbda,args_Lm_En[2],en_TN_Table);
+
+        ArrayList<String> es_corpus = Parse.readCorpus(args_Lm_Es[1]);
+        HashMap<String,ArrayList<Integer>>[] es_TN_Table =  new HashMap[n_gram_es-1];
+        HashMap<String,Integer>[] es_nGramTable = Parse.createNGramTable(es_corpus, n_gram_es, es_method, es_TN_Table);
+        es_nGramTable = Parse.addUnknown(es_nGramTable);
+        Pr_Methods es_pr = new Pr_Methods(es_nGramTable,es_method,es_lmbda,args_Lm_Es[2],es_TN_Table);
+
+        ArrayList<String> ca_corpus = Parse.readCorpus(args_Lm_Ca[1]);
+        HashMap<String,ArrayList<Integer>>[] ca_TN_Table =  new HashMap[n_gram_ca-1];
+        HashMap<String,Integer>[] ca_nGramTable = Parse.createNGramTable(ca_corpus, n_gram_ca, ca_method, ca_TN_Table);
+        ca_nGramTable = Parse.addUnknown(ca_nGramTable);
+        Pr_Methods ca_pr = new Pr_Methods(ca_nGramTable,ca_method,ca_lmbda,args_Lm_Ca[2],ca_TN_Table);
+
+        if (en_method.equals("wb")){
+            eval.readWB(Table_en, args_Lm_En[2]);
+        }else if(en_method.equals("ls")){
+            eval.readLS(Table_en, args_Lm_En[2]);
+        }
+
+        if (es_method.equals("wb")){
+            eval.readWB(Table_es, args_Lm_Es[2]);
+        }else if(es_method.equals("ls")){
+            eval.readLS(Table_es, args_Lm_Es[2]);
+        }
+
+        if (ca_method.equals("wb")){
+            eval.readWB(Table_ca, args_Lm_Ca[2]);
+        }else if(ca_method.equals("ls")){
+            eval.readLS(Table_ca, args_Lm_Ca[2]);
+        }
+        ArrayList<Integer> srcLine = new ArrayList<>();
+        mixed_corpus = Parse.readCorpus2("src/mixed.test",srcLine);
+        mixed_key = Parse.readCorpus("src/mixed.key");
+
+        int[] key_val = new int[mixed_corpus.size()];
+        int[] prediced = new int[mixed_corpus.size()];
+
+
         int i = 0;
         for (String str:mixed_key){
-            key_val[i] = (Integer.parseInt(str));
-            i++;
+            String[] tokes = str.split(" ");
+            key_val[i++] = (Integer.parseInt(tokes[1]));
         }
 
         i = 0;
-        for (String line:mixed_corpus){
-            Perplexity_en = eval.evalLS(Table_en,line, n_gram_en);
-            Perplexity_es = eval.evalLS(Table_es,line, n_gram_es);
-            Perplexity_ca = eval.evalLS(Table_ca,line, n_gram_ca);
+        int j =0;
+
+        for (int jPrev =j;jPrev <mixed_corpus.size();jPrev = j){
+            Perplexity_en = Perplexity_es = Perplexity_ca = 0.0;
+            while(j < mixed_corpus.size()&&srcLine.get(j++) == srcLine.get(jPrev)) {
+                String line = mixed_corpus.get(jPrev);
+                Perplexity_en += eval.evalLS(Table_en, line, n_gram_en);
+                Perplexity_es += eval.evalLS(Table_es, line, n_gram_es);
+                Perplexity_ca += eval.evalLS(Table_ca, line, n_gram_ca);
+            }
             if(Perplexity_en<Perplexity_es && Perplexity_en<Perplexity_ca){
                 prediced[i] = 0;
             }else if(Perplexity_es<Perplexity_ca){
@@ -92,7 +147,7 @@ public class test2 {
                 sum += 1;
             }
         }
-        suc = sum/600;
+        suc = sum/(double)key_val.length;
 
         System.out.println("the suc ratio is - " + suc);
     }
