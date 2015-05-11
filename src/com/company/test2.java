@@ -179,10 +179,10 @@ public class test2 {
 
         double Perplexity = 0;
         double Best_Perplexity = Double.POSITIVE_INFINITY;
-        double N = eval.readNumberOfWords(corpus, n_gram);
+        double N = eval.readNumberOfWords(test_corpus, n_gram);
         ArrayList<ArrayList<Double>> lambda = Combination.CreateLmbdaList(n_gram);
         for (ArrayList<Double> temp_lambda : lambda) {
-            for (String line : corpus) {
+            for (String line : test_corpus) {
                 Perplexity += eval.evalWB(Table, line, temp_lambda);
             }
             Perplexity = Math.pow(10, Perplexity / N);
