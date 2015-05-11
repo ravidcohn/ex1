@@ -76,11 +76,12 @@ public class test2 {
     public static void testWB() {
         ArrayList<Double>[] best_lambda = new ArrayList[4];
         for (int i = 2; i < 5; i++) {
-//           best_lambda[i] vals = lmbdaTestForWB("src/en_text.corp","src/en.test",i);
-            //    best_lambda[i] vals = lmbdaTestForWB("src/trainLs","src/testLs",i);
-            best_lambda[i] = lmbdaTestForWB("src/ca_text.corp", "src/ca.test", i);
-//             best_lambda[i] vals = lmbdaTestForWB("src/es_text.corp","src/es.test",i);
             System.out.println("n-gram: " + i);
+//           best_lambda[i]  = lmbdaTestForWB("src/en_text.corp","src/en.test",i);
+                best_lambda[i-1]  = lmbdaTestForWB("src/trainLs","src/testLs",i);
+//            best_lambda[i] = lmbdaTestForWB("src/ca_text.corp", "src/ca.test", i);
+//             best_lambda[i]  = lmbdaTestForWB("src/es_text.corp","src/es.test",i);
+
         }
     }
 
@@ -96,7 +97,7 @@ public class test2 {
         nGramTable = Parse.addUnknown(nGramTable);
         Pr_Methods pr = new Pr_Methods(nGramTable,method,0.5,out,TN_Table);
         ArrayList<String> test_corpus = Parse.readCorpus(test_inPath);
-        Test.readLS(Table,out);
+        Test.readWB(Table, out);
 
         double Perplexity = 0;
         double Best_Perplexity = Double.POSITIVE_INFINITY;
