@@ -82,6 +82,7 @@ public static void testWB() {
         Point2D.Double[] lmbdaXY = new Point2D.Double[size];
 
 
+
         ArrayList<String> corpus = Parse.readCorpus(lm_inPath);
         String out = "src/lidstonLmbdaTest_";
         String method = "ls";
