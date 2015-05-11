@@ -132,6 +132,7 @@ private void LidstonesLaw(HashMap<String,Integer>[] nGramTable, double lmbda){
         String subStr;
         DecimalFormat df = new DecimalFormat("#.####");
         df.setRoundingMode(RoundingMode.CEILING);
+        double v = nGramTable[0].keySet().size();
         double Z_i1 = 0;
         double pr2 = 0;
         for (int i = 0; i < nGramTable.length; i++) {
@@ -141,7 +142,7 @@ private void LidstonesLaw(HashMap<String,Integer>[] nGramTable, double lmbda){
                 if(i == 0){
                     pr = pr/(N[i]);
                     if(TN_Table[i].get(wi) != null) {
-                        Z_i1 = N[0] - TN_Table[i].get(wi).get(0);
+                        Z_i1 = v - TN_Table[i].get(wi).get(0);
                         pr2 = TN_Table[i].get(wi).get(0) / (Z_i1 * (TN_Table[i].get(wi).get(0) + TN_Table[i].get(wi).get(1)));
                     }
                     else{
@@ -155,7 +156,7 @@ private void LidstonesLaw(HashMap<String,Integer>[] nGramTable, double lmbda){
                     subStr = wi.substring(0, end);
                     pr /= (TN_Table[i-1].get(subStr).get(0)+TN_Table[i-1].get(subStr).get(1));
                     if(TN_Table[i].get(wi) != null) {
-                        Z_i1 = N[0] - TN_Table[i].get(wi).get(0);
+                        Z_i1 = v - TN_Table[i].get(wi).get(0);
                         pr2 = TN_Table[i].get(wi).get(0) / (Z_i1 * (TN_Table[i].get(wi).get(0) + TN_Table[i].get(wi).get(1)));
                     }
                     else{
