@@ -32,7 +32,7 @@ public class test2 {
         ArrayList<String> mixed_key = new ArrayList<>();
 
         Double Perplexity_en, Perplexity_es, Perplexity_ca;
-        int n_gram_en = 4; int n_gram_es = 4; int n_gram_ca = 4;
+        int n_gram_en = 3; int n_gram_es = 4; int n_gram_ca = 4;
 
         HashMap<String,ArrayList<Double>>[] Table_en = new HashMap[n_gram_en];
         HashMap<String,ArrayList<Double>>[] Table_es = new HashMap[n_gram_es];
@@ -114,24 +114,59 @@ public class test2 {
         int[] key_val = new int[mixed_corpus.size()];
         int[] prediced = new int[mixed_corpus.size()];
 
+        ArrayList<Double> en_lmbdot = new ArrayList<>();
+        ArrayList<Double> es_lmbdot = new ArrayList<>();
+        ArrayList<Double> ca_lmbdot = new ArrayList<>();
+
+        en_lmbdot.add(0.6);
+        en_lmbdot.add(0.35);
+        en_lmbdot.add(0.05);
+
+        es_lmbdot.add(0.5);
+        es_lmbdot.add(0.45);
+        es_lmbdot.add(0.05);
+        es_lmbdot.add(0.0);
+
+        ca_lmbdot.add(0.45);
+        ca_lmbdot.add(0.45);
+        ca_lmbdot.add(0.05);
+        ca_lmbdot.add(0.5);
 
         int i = 0;
-        for (String str:mixed_key){
+        int count = 0;
+        for (int j = 0;j <mixed_key.size();j++){
+            String str = mixed_key.get(j);
             String[] tokes = str.split(" ");
-            key_val[i++] = (Integer.parseInt(tokes[1]));
+            int same = count;
+            while(count < mixed_corpus.size() && srcLine.get(same) == srcLine.get(count)) {
+                key_val[i++] = (Integer.parseInt(tokes[1]));
+                count++;
+            }
         }
 
         i = 0;
-        int j =0;
+        Perplexity_en = Perplexity_es = Perplexity_ca = 0.0;
+        for (String line : mixed_corpus){
+                if(en_method.equals("ls")){
+                Perplexity_en = eval.evalLS(Table_en, line, n_gram_en);
+                }
+                else if(en_method.equals("wb")){
+                    Perplexity_en = eval.evalWB(Table_en, line, en_lmbdot);
+                }
+                if(es_method.equals("ls")) {
+                    Perplexity_es = eval.evalLS(Table_es, line, n_gram_es);
+                }
+                else if(es_method.equals("wb")){
+                    Perplexity_es = eval.evalWB(Table_es, line, es_lmbdot);
+                }
+                if(es_method.equals("ls")) {
+                Perplexity_ca = eval.evalLS(Table_ca, line, n_gram_ca);
+                }
+                else if(es_method.equals("wb")){
+                Perplexity_ca = eval.evalWB(Table_ca, line, ca_lmbdot);
+                }
 
-        for (int jPrev =j;jPrev <mixed_corpus.size();jPrev = j){
-            Perplexity_en = Perplexity_es = Perplexity_ca = 0.0;
-            while(j < mixed_corpus.size()&&srcLine.get(j++) == srcLine.get(jPrev)) {
-                String line = mixed_corpus.get(jPrev);
-                Perplexity_en += eval.evalLS(Table_en, line, n_gram_en);
-                Perplexity_es += eval.evalLS(Table_es, line, n_gram_es);
-                Perplexity_ca += eval.evalLS(Table_ca, line, n_gram_ca);
-            }
+
             if(Perplexity_en<Perplexity_es && Perplexity_en<Perplexity_ca){
                 prediced[i] = 0;
             }else if(Perplexity_es<Perplexity_ca){
