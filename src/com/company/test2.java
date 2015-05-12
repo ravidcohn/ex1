@@ -34,6 +34,57 @@ public class test2 {
         Double Perplexity_en, Perplexity_es, Perplexity_ca;
         int n_gram_en = 3; int n_gram_es = 4; int n_gram_ca = 4;
 
+        ArrayList<Double>[] en_lmbdot = new ArrayList[3];
+        ArrayList<Double>[] es_lmbdot  = new ArrayList[3];
+        ArrayList<Double>[] ca_lmbdot = new ArrayList[3];
+
+        for (int i = 0; i <3 ; i++) {
+            en_lmbdot[i] = new ArrayList<>();
+            es_lmbdot[i] = new ArrayList<>();
+            ca_lmbdot[i] = new ArrayList<>();
+        }
+        en_lmbdot[0].add(0.6);
+        en_lmbdot[0].add(0.4);
+
+        en_lmbdot[1].add(0.6);
+        en_lmbdot[1].add(0.35);
+        en_lmbdot[1].add(0.05);
+
+        en_lmbdot[2].add(0.6);
+        en_lmbdot[2].add(0.35);
+        en_lmbdot[2].add(0.05);
+        en_lmbdot[2].add(0.0);
+
+        es_lmbdot[0].add(0.5);
+        es_lmbdot[0].add(0.5);
+
+        es_lmbdot[1].add(0.5);
+        es_lmbdot[1].add(0.45);
+        es_lmbdot[1].add(0.05);
+
+        es_lmbdot[2].add(0.5);
+        es_lmbdot[2].add(0.45);
+        es_lmbdot[2].add(0.05);
+        es_lmbdot[2].add(0.0);
+
+        ca_lmbdot[0].add(0.4);
+        ca_lmbdot[0].add(0.6);
+
+        ca_lmbdot[1].add(0.45);
+        ca_lmbdot[1].add(0.45);
+        ca_lmbdot[1].add(0.1);
+
+        ca_lmbdot[2].add(0.45);
+        ca_lmbdot[2].add(0.45);
+        ca_lmbdot[2].add(0.05);
+        ca_lmbdot[2].add(0.05);
+
+
+
+
+
+
+
         HashMap<String,ArrayList<Double>>[] Table_en = new HashMap[n_gram_en];
         HashMap<String,ArrayList<Double>>[] Table_es = new HashMap[n_gram_es];
         HashMap<String,ArrayList<Double>>[] Table_ca = new HashMap[n_gram_ca];
@@ -114,23 +165,6 @@ public class test2 {
         int[] key_val = new int[mixed_corpus.size()];
         int[] prediced = new int[mixed_corpus.size()];
 
-        ArrayList<Double> en_lmbdot = new ArrayList<>();
-        ArrayList<Double> es_lmbdot = new ArrayList<>();
-        ArrayList<Double> ca_lmbdot = new ArrayList<>();
-
-        en_lmbdot.add(0.6);
-        en_lmbdot.add(0.35);
-        en_lmbdot.add(0.05);
-
-        es_lmbdot.add(0.5);
-        es_lmbdot.add(0.45);
-        es_lmbdot.add(0.05);
-        es_lmbdot.add(0.0);
-
-        ca_lmbdot.add(0.45);
-        ca_lmbdot.add(0.45);
-        ca_lmbdot.add(0.05);
-        ca_lmbdot.add(0.5);
 
         int i = 0;
         int count = 0;
@@ -151,19 +185,19 @@ public class test2 {
                 Perplexity_en = eval.evalLS(Table_en, line, n_gram_en);
                 }
                 else if(en_method.equals("wb")){
-                    Perplexity_en = eval.evalWB(Table_en, line, en_lmbdot);
+                    Perplexity_en = eval.evalWB(Table_en, line, en_lmbdot[n_gram_en-2]);
                 }
                 if(es_method.equals("ls")) {
                     Perplexity_es = eval.evalLS(Table_es, line, n_gram_es);
                 }
                 else if(es_method.equals("wb")){
-                    Perplexity_es = eval.evalWB(Table_es, line, es_lmbdot);
+                    Perplexity_es = eval.evalWB(Table_es, line, es_lmbdot[n_gram_es-2]);
                 }
                 if(es_method.equals("ls")) {
                 Perplexity_ca = eval.evalLS(Table_ca, line, n_gram_ca);
                 }
                 else if(es_method.equals("wb")){
-                Perplexity_ca = eval.evalWB(Table_ca, line, ca_lmbdot);
+                Perplexity_ca = eval.evalWB(Table_ca, line, ca_lmbdot[n_gram_ca-2]);
                 }
 
 
