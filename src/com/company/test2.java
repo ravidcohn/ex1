@@ -13,7 +13,7 @@ public class test2 {
 
     public static void main(String[] args){
 //        ArrayList<Point2D.Double[]>allVals = new ArrayList<>();
-        String method = "ls";//wb\ls.
+        String method = "mixed";//wb\ls.
         if (method.equals("ls")) {
             testLS();
         }else if (method.equals("wb")){
@@ -32,7 +32,7 @@ public class test2 {
         ArrayList<String> mixed_key = new ArrayList<>();
 
         Double Perplexity_en, Perplexity_es, Perplexity_ca;
-        int n_gram_en = 3; int n_gram_es = 4; int n_gram_ca = 4;
+        int n_gram_en = 4; int n_gram_es = 4; int n_gram_ca = 4;
 
         ArrayList<Double>[] en_lmbdot = new ArrayList[3];
         ArrayList<Double>[] es_lmbdot  = new ArrayList[3];
@@ -93,12 +93,12 @@ public class test2 {
 
         int sum = 0;
         double suc = 0;
-        double en_lmbda = 0.01;
-        String en_method = "wb";
-        double es_lmbda = 0.01;
-        String es_method = "wb";
-        double ca_lmbda = 0.01;
-        String ca_method = "wb";
+        double en_lmbda = 0.00000000000000001;
+        String en_method = "ls";
+        double es_lmbda = 0.00000000000000001;
+        String es_method = "ls";
+        double ca_lmbda = 0.0000000000000001;
+        String ca_method = "ls";
 
         args_Lm_En[0] = ""+n_gram_en;
         args_Lm_En[1] = "src/en_text.corp";
