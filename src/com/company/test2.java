@@ -32,7 +32,7 @@ public class test2 {
         ArrayList<String> mixed_key = new ArrayList<>();
 
         Double Perplexity_en, Perplexity_es, Perplexity_ca;
-        int n_gram_en = 2; int n_gram_es = 2; int n_gram_ca = 2;
+        int n_gram_en = 3; int n_gram_es = 4; int n_gram_ca = 4;
 
         HashMap<String,ArrayList<Double>>[] Table_en = new HashMap[n_gram_en];
         HashMap<String,ArrayList<Double>>[] Table_es = new HashMap[n_gram_es];
@@ -119,18 +119,18 @@ public class test2 {
         ArrayList<Double> ca_lmbdot = new ArrayList<>();
 
         en_lmbdot.add(0.6);
-        en_lmbdot.add(0.4);
-//        en_lmbdot.add(0.05);
+        en_lmbdot.add(0.35);
+        en_lmbdot.add(0.05);
 
         es_lmbdot.add(0.5);
-        es_lmbdot.add(0.5);
-  //      es_lmbdot.add(0.05);
-   //     es_lmbdot.add(0.0);
+        es_lmbdot.add(0.45);
+        es_lmbdot.add(0.05);
+        es_lmbdot.add(0.0);
 
-        ca_lmbdot.add(0.4);
-        ca_lmbdot.add(0.6);
-     //   ca_lmbdot.add(0.05);
-      //  ca_lmbdot.add(0.5);
+        ca_lmbdot.add(0.45);
+        ca_lmbdot.add(0.45);
+        ca_lmbdot.add(0.05);
+        ca_lmbdot.add(0.5);
 
         int i = 0;
         int count = 0;
