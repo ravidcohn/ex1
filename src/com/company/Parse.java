@@ -62,6 +62,62 @@ public class Parse {
         return lines;
     }
 
+    public static ArrayList<String> readCorpus2(String fileName,ArrayList<Integer> srcLine){
+        ArrayList<String> lines = new ArrayList<>();
+        StringTokenizer st;
+        BufferedReader br = null;
+        String START = "<s> ";
+        String END = " </s>";
+        int i = 0;
+        //Which symbol to use for separating the lines.
+        //TODO insert special cases, like "S.K.".
+        String DELIMS = ";:\"";
+        String line = null;
+        try {
+
+            String sCurrentLine;
+
+            br = new BufferedReader(new FileReader(fileName));
+
+            while ((sCurrentLine = br.readLine()) != null) {
+                st = new StringTokenizer(sCurrentLine,DELIMS);
+                while(st.hasMoreElements()){
+                    line = (String) st.nextElement();
+                    line = line.replaceAll(",", " ");
+                    line = line.replaceAll(":", " ");
+                    line = line.replaceAll(";", " ");
+                    line = line.replaceAll("\\(", " ");
+                    line = line.replaceAll("\\)", " ");
+                    line = line.replaceAll("\\?", " ");
+                    line = line.replaceAll("\\."," ");
+                    line = line.replaceAll("\"", " ");
+                    line = line.replaceAll("\\s+", " ");
+                    line = line.trim();
+                    if (line.length()>0) {
+                        line = START + line + END;
+                        lines.add(line);
+                        srcLine.add(i);
+                    }
+                }
+                i++;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (br != null)br.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+
+        return lines;
+    }
+
+
+
     public static HashMap<String,Integer> countAllWords(ArrayList<String> lines, int n_gram){
         HashMap<String,Integer> wordCount = new HashMap<>();
         int j_border_end = n_gram-1;

@@ -110,7 +110,6 @@ public class eval {
                 }
                 else{
                     pr += Table[n_gram - 2].get(sub).get(1);
-                    double shit = Table[n_gram - 2].get(sub).get(1);
                 }
             }
             else{
