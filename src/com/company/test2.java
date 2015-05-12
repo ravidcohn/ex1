@@ -179,6 +179,7 @@ public class test2 {
         }
 
         i = 0;
+        int cnf = 0;
         Perplexity_en = Perplexity_es = Perplexity_ca = 0.0;
         for (String line : mixed_corpus){
                 if(en_method.equals("ls")){
@@ -201,7 +202,7 @@ public class test2 {
                 }
 
 
-            if(Perplexity_en<Perplexity_es && Perplexity_en<Perplexity_ca){
+            if(Perplexity_en<=Perplexity_es && Perplexity_en<=Perplexity_ca){
                 prediced[i] = 0;
             }else if(Perplexity_es<Perplexity_ca){
                 prediced[i] =1;
@@ -215,10 +216,15 @@ public class test2 {
             if (prediced[i]==key_val[i]){
                 sum += 1;
             }
+            else {
+                cnf++;
+                System.out.println(prediced[i] + " - " + key_val[i]);
+            }
         }
         suc = sum/(double)key_val.length;
 
         System.out.println("the suc ratio is - " + suc);
+        System.out.println("cnf: "+cnf);
     }
 
     public static void testLS(){
